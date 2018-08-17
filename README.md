@@ -138,14 +138,14 @@ for adding "literal" double quotes in CSV:
 
 ```
 """1""","""2""","""3"""
-4,5,"Six says, ""Hello, World!"""
+4,5,"Hamlet says, ""Seems,"" madam! Nay it is. I know not ""seems."""
 ```
 
 vs
 
 ```
 "1"→"2"→"3"
-4→5→Six says, "Hello, World!"
+4→5→Hamlet says, "Seems," madam! Nay it is. I know not "seems."
 ```
 
 Thus, to avoid any surprises, do NOT use
