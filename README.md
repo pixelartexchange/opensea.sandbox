@@ -9,7 +9,7 @@
 
 ## Usage
 
-Yes, it's a simple as:
+Yes, it's as simple as:
 
 ``` ruby
 line = "1\t2\t3"
@@ -218,7 +218,7 @@ Thus, tab works great only and only (like space) if your values do NOT use space
 ## Best of Both Worlds
 
 Use the `csv2tab` tool to convert comma-separated values (CSV) datafiles
-to tab and use the `tab2csv` tool to convert tab datafiles to  
+to tab and use the `tab2csv` tool to convert tab datafiles to
 comma-separated values (CSV).
 
 
