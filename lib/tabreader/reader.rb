@@ -112,3 +112,26 @@ def self.header( path )
 end
 
 end # class TabReader
+
+
+
+
+class TabHashReader
+
+def self.read( path, headers: true )
+  TabReader.read( path, headers: headers )
+end
+
+def self.parse( txt, headers: true )
+  TabReader.parse( txt, headers: headers )
+end
+
+def self.foreach( path, headers: true, &block )
+  TabReader.foreach( path, headers: headers, &block )
+end
+
+def self.header( path )   ## add header too? why? why not?
+  TabReader.header( path )
+end
+
+end # class TabHashReader

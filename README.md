@@ -52,8 +52,8 @@ pp records
 TabReader.foreach( "values.tab" ) do |rec|
   pp rec
 end
-## => ["1","2","3"]
-## => ["5","6","7"]
+# => ["1","2","3"]
+# => ["5","6","7"]
 ```
 
 
@@ -171,7 +171,7 @@ Here is a quick grammar in Backus-Naur Form (BNF):
 ```
 field    ::= [character]+             # multiple characters
 record   ::= field [TAB field]+ EOL   # at least one field, or more
-tab      ::= record+
+datafile ::= record+
 ```
 
 Example:
