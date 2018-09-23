@@ -1,7 +1,7 @@
 # tabreader - read in tabular datafiles in text in the tab format
 
-* home  :: [github.com/datatxt/tabreader](https://github.com/datatxt/tabreader)
-* bugs  :: [github.com/datatxt/tabreader/issues](https://github.com/datatxt/tabreader/issues)
+* home  :: [github.com/csv11/tabreader](https://github.com/csv11/tabreader)
+* bugs  :: [github.com/csv11/tabreader/issues](https://github.com/csv11/tabreader/issues)
 * gem   :: [rubygems.org/gems/tabreader](https://rubygems.org/gems/tabreader)
 * rdoc  :: [rubydoc.info/gems/tabreader](http://rubydoc.info/gems/tabreader)
 * forum :: [wwwmake](http://groups.google.com/group/wwwmake)
