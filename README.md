@@ -109,7 +109,7 @@ end
 
 ## Frequently Asked Questions (FAQ) and Answers
 
-### Q: Why NOT use `CSV.read( col_sep: "\t", quote_char: "∅" )`?
+### Q: Why NOT use `Csv.read( sep: "\t" )`?
 
 Tab != CSV
 
@@ -149,7 +149,7 @@ vs
 ```
 
 Thus, to avoid any surprises, do NOT use
-`CSV.read( col_sep: "\t", quote_char: "∅" )` and friends for tab.
+`Csv.read( sep: "\t" )` and friends for tab.
 Note: Simpler also equals faster :-).
 
 
