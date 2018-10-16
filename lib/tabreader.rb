@@ -2,14 +2,22 @@
 
 
 require 'pp'
+require 'logger'
 
 
 ###
 # our own code
+#   check: use require_relative - why? why not?
 require 'tabreader/version' # let version always go first
 require 'tabreader/reader'
+require 'tabreader/reader_hash'
 
 
+
+## add some "convenience" shortcuts
+TAB     = TabReader
+Tab     = TabReader
+TabHash = TabHashReader
 
 
 

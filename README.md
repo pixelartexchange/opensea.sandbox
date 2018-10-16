@@ -1,4 +1,4 @@
-# tabreader - read in tabular datafiles in text in the tab format
+# tabreader - read in tabular datafiles in text in the tabular (TAB) format
 
 * home  :: [github.com/csv11/tabreader](https://github.com/csv11/tabreader)
 * bugs  :: [github.com/csv11/tabreader/issues](https://github.com/csv11/tabreader/issues)
@@ -22,7 +22,7 @@ or the "magic" packaged up in `TabReader`:
 
 ``` ruby
 line = "1\t2\t3"
-values = TabReader.parse_line( line )
+values = Tab.parse_line( line )   ## or TAB.parse_line or TabReader.parse_line
 pp values
 # => ["1","2","3"]
 ```
@@ -30,58 +30,84 @@ pp values
 or use the convenience helpers:
 
 ``` ruby
-txt <<=TAB
+txt <<=TXT
 1\t2\t3
 4\t5\t6
-TAB
+TXT
 
-records = TabReader.parse( txt )
+records = Tab.parse( txt )   ## or TAB.parse or TabReader.parse
 pp records
 # => [["1","2","3"],
-#     ["5","6","7"]]
+#     ["4","5","6"]]
 
 # -or-
 
-records = TabReader.read( "values.tab" )
+records = Tab.read( "values.tab" )  ## or TAB.read or TabReader.read
 pp records
 # => [["1","2","3"],
-#     ["5","6","7"]]
+#     ["4","5","6"]]
 
 # -or-
 
-TabReader.foreach( "values.tab" ) do |rec|
+Tab.foreach( "values.tab" ) do |rec|  ## or TAB.foreach or TabReader.foreach
   pp rec
 end
 # => ["1","2","3"]
-# => ["5","6","7"]
+# => ["4","5","6"]
+```
+
+
+
+### What about Enumerable?
+
+Yes, every reader includes `Enumerable` and runs on `each`.
+Use `new` or `open` without a block
+to get the enumerator (iterator).
+Example:
+
+
+``` ruby
+tab = Tab.new( "a\tb\tc" )   ## or TAB.new or TabReader.new
+it  = tab.to_enum
+pp it.next  
+# => ["a","b","c"]
+
+# -or-
+
+tab = Tab.open( "values.tab" ) ## or TAB.open or TabReader.open
+it  = tab.to_enum
+pp it.next
+# => ["1","2","3"]
+pp it.next
+# => ["4","5","6"]
 ```
 
 
 ### What about headers?
 
-Use the `TabHashReader`
+Use the `TabHash`
 if the first line is a header (or if missing pass in the headers
 as an array) and you want your records as hashes instead of arrays of values.
 Example:
 
 ``` ruby
-txt <<=TAB
+txt <<=TXT
 A\tB\tC
 1\t2\t3
 4\t5\t6
-TAB
+TXT
 
-records = TabHashReader.parse( txt )
+records = TabHash.parse( txt )   ## or TabHashReader
 pp records
 
 # -or-
 
-txt2 <<=TAB
+txt2 <<=TXT
 1\t2\t3
 4\t5\t6
-TAB
+TXT
 
-records = TabHashReader.parse( txt2, headers: ["A","B","C"] )
+records = TabHash.parse( txt2, headers: ["A","B","C"] )
 pp records
 
 # => [{"A": "1", "B": "2", "C": "3"},
@@ -89,14 +115,14 @@ pp records
 
 # -or-
 
-records = TabHashReader.read( "hash.tab" )
+records = TabHash.read( "hash.tab" )
 pp records
 # => [{"A": "1", "B": "2", "C": "3"},
 #     {"A": "4", "B": "5", "C": "6"}]
 
 # -or-
 
-TabHashReader.foreach( "hash.tab" ) do |rec|
+TabHash.foreach( "hash.tab" ) do |rec|
   pp rec
 end
 # => {"A": "1", "B": "2", "C": "3"}
@@ -111,9 +137,9 @@ end
 
 ### Q: Why NOT use `Csv.read( sep: "\t" )`?
 
-Tab != CSV
+TAB != CSV
 
-The tab format is an (even) simpler format than
+The tabulator (TAB) format is an (even) simpler format than
 the comma-separated values (CSV) classic format. How?
 
 The tab format has NO escape rules.
@@ -154,7 +180,7 @@ Note: Simpler also equals faster :-).
 
 
 
-### Q: What's the tab format?
+### Q: What's the tabulator (TAB) format?
 
 Let's reprint the (complete) tab spec(ification) right here
 (in an edited simpler version):

@@ -26,11 +26,9 @@ TXT
 
 puts "== parse:"
 pp TabReader.parse( txt1 )
-pp TabReader.parse( txt1, headers: true )
 
 puts "== parse:"
 pp TabReader.parse( txt2 )
-pp TabReader.parse( txt2, headers: true )
 
 puts "== parse_line:"
 pp TabReader.parse_line( "1\t2\t3" )
@@ -49,14 +47,10 @@ def test_read
 
 puts "== read:"
 pp TabReader.read( "#{TabReader.test_data_dir}/test.tab" )
-pp TabReader.read( "#{TabReader.test_data_dir}/test.tab", headers: true )
 puts "== header:"
 pp TabReader.header( "#{TabReader.test_data_dir}/test.tab" )
 puts "== foreach:"
 TabReader.foreach( "#{TabReader.test_data_dir}/test.tab" ) do |row|
-  pp row
-end
-TabReader.foreach( "#{TabReader.test_data_dir}/test.tab", headers: true ) do |row|
   pp row
 end
 end

@@ -5,10 +5,10 @@ Hoe.spec 'tabreader' do
 
   self.version = TabReader::VERSION
 
-  self.summary = "tabreader - read in tabular datafiles in text in the tab format"
+  self.summary = "tabreader - read in tabular datafiles in text in the tabular (TAB) format"
   self.description = summary
 
-  self.urls = ['https://github.com/datatext/tabreader']
+  self.urls = ['https://github.com/csv11/tabreader']
 
   self.author = 'Gerald Bauer'
   self.email = 'wwwmake@googlegroups.com'
@@ -20,7 +20,7 @@ Hoe.spec 'tabreader' do
   self.licenses = ['Public Domain']
 
   self.spec_extras = {
-   :required_ruby_version => '>= 2.2.2'
+    required_ruby_version: '>= 2.2.2'
   }
 
 end

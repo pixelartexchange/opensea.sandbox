@@ -14,124 +14,164 @@ class TabReader
 ##  todo: add  converters: e.g. strip (akk trim / ltrim / rtrim )
 
 
-def self.read( path, headers: false )
-  txt = File.open( path, 'r:utf-8' ).read
-	## puts "#{path}:"
-  ## pp txt
-  parse( txt, headers: headers )
+
+###################################
+## add simple logger with debug flag/switch
+#
+#  use Parser.debug = true   # to turn on
+#
+#  todo/fix: use logutils instead of std logger - why? why not?
+
+def self.build_logger()
+  l = Logger.new( STDOUT )
+  l.level = :info    ## set to :info on start; note: is 0 (debug) by default
+  l
 end
+def self.logger() @@logger ||= build_logger; end
+def logger()  self.class.logger; end
 
-def self.parse( txt, headers: false )   ## use parse_rows or parse_lines for array or array results
-   rows = []
 
-   if headers.is_a?( Array )
-     columns = headers
-   else
-     columns = nil    ## header row a.k.a. columns / fields
-   end
-
-   txt.each_line do |line|
-     values = parse_line( line )
-     if headers  ## add values as name/value pairs e.g. array of hashes
-       if columns.nil?
-         columns = values    ## first row is header row
-       else
-         ## note: will cut-off values if values.size > columns.size
-         ##   add warning/error - why? why not?
-         ##  if values.size <= columns.size will get filled-up with nil
-         pairs = columns.zip(values)
-         ## pp pairs
-         h = pairs.to_h
-         ## pp h
-
-         rows << h
-       end
-     else       ## add values as is e.g. array of array
-       rows << values
-     end
-   end
-   rows
-end
-
-def self.foreach( path, headers: false )
-  if headers.is_a?( Array )
-    columns = headers
-  else
-    columns = nil    ## header row a.k.a. columns / fields
-  end
-
-	File.open( path, 'r:utf-8' ).each_line do |line|
-		pp line
-		values = parse_line( line )
-		if headers  ## add values as name/value pairs e.g. array of hashes
-			if columns.nil?
-				columns = values    ## first row is header row
-			else
-				pairs = columns.zip(values)
-				h = pairs.to_h
-				yield( h )
-			end
-		else       ## add values as is e.g. array of array
-			yield( values )
-		end
-	end
-
-	# return nil
-	nil
-end
 
 
 def self.parse_line( line )
   ## check - can handle comments and blank lines too - why? why not?
   ## remove trailing newlines
 
+  logger.debug  "line:"             if logger.debug?
+  logger.debug line.pretty_inspect  if logger.debug?
+
+
   ##  note: chomp('') if is an empty string,
   ##    it will remove all trailing newlines from the string.
-	##    use line.sub(/[\n\r]*$/, '') or similar instead - why? why not?
-  line = line.chomp('')
+  ##    use line.sub(/[\n\r]*$/, '') or similar instead - why? why not?
+  line = line.chomp( '' )
 
-  values = line.split("\t")
+  ## line = line.strip         ## strip leading and trailing whitespaces (space/tab) too
+
+  logger.debug line.pretty_inspect    if logger.debug?
+
+#      if line.empty?             ## skip blank lines
+#        logger.debug "skip blank line"    if logger.debug?
+#        next
+#      end
+
+#      if line.start_with?( "#" )  ## skip comment lines
+#        logger.debug "skip comment line"   if logger.debug?
+#        next
+#      end
+
+  values = line.split( "\t" )
+  logger.debug values.pretty_inspect   if logger.debug?
+
   values
 end
 
-def self.header( path )
-  line =  File.open( path, 'r:utf-8' ) do |f|
-     if f.eof?
-			 ## handle empty file; return empty string; no readline call possible
-			 ##  todo/check: return nil from header is no header or [] - why? why not?
-			 ##   or throw exception  end of file reached (EOFError) - why? why not?
-			  ""
-		 else
-			 f.readline
-		 end
+
+
+
+def self.open( path, mode=nil, &block )   ## rename path to filename or name - why? why not?
+
+    ## note: default mode (if nil/not passed in) to 'r:bom|utf-8'
+    f = File.open( path, mode ? mode : 'r:bom|utf-8' )
+    tab = new( f )
+
+    # handle blocks like Ruby's open()
+    if block_given?
+      begin
+        block.call( tab )
+      ensure
+        tab.close
+      end
+    else
+      tab
+    end
+end # method self.open
+
+
+def self.read( path )
+    open( path ) { |tab| tab.read }
+end
+
+
+def self.foreach( path, &block )
+  tab = open( path )
+
+  if block_given?
+    begin
+      tab.each( &block )
+    ensure
+      tab.close
+    end
+  else
+    tab.to_enum    ## note: caller (responsible) must close file!!!
+    ## remove version without block given - why? why not?
+    ## use Tab.open().to_enum  or Tab.open().each
+    ##   or Tab.new( File.new() ).to_enum or Tab.new( File.new() ).each ???
+  end
+end # method self.foreach
+
+
+def self.parse( data, &block )
+  tab = new( data )
+
+  if block_given?
+    tab.each( &block )  ## note: caller (responsible) must close file!!! - add autoclose - why? why not?
+  else  # slurp contents, if no block is given
+    tab.read            ## note: caller (responsible) must close file!!! - add autoclose - why? why not?
+  end
+end # method self.parse
+
+
+
+## convenience helper for header (first row with column names)
+def self.header( path )   ## use header or headers - or use both (with alias)?
+  # read first lines (only)
+
+  records = []
+  open( path ) do |tab|
+    tab.each do |record|
+      records << record
+      break   ## only parse/read first record
+    end
   end
 
-  ## note: line includes \n or \r\n at the end
-  ## pp line
-  parse_line( line )
+  ## unwrap record if empty return nil - why? why not?
+  ##  return empty record e.g. [] - why? why not?
+  ##  returns nil for empty (for now) - why? why not?
+  records.size == 0 ? nil : records.first
+end  # method self.header
+
+
+
+
+def initialize( data )
+  if data.is_a?( String )
+    @input = data   # note: just needs each for each_line
+  else  ## assume io
+    @input = data
+  end
+end
+
+
+include Enumerable
+
+def each( &block )
+  if block_given?
+    @input.each_line do |line|
+
+      values = self.class.parse_line( line )
+
+      block.call( values )
+    end
+  else
+     to_enum
+  end
+end # method each
+
+def read() to_a; end # method read
+
+def close
+  @input.close   if @input.respond_to?(:close)   ## note: string needs no close
 end
 
 end # class TabReader
-
-
-
-
-class TabHashReader
-
-def self.read( path, headers: true )
-  TabReader.read( path, headers: headers )
-end
-
-def self.parse( txt, headers: true )
-  TabReader.parse( txt, headers: headers )
-end
-
-def self.foreach( path, headers: true, &block )
-  TabReader.foreach( path, headers: headers, &block )
-end
-
-def self.header( path )   ## add header too? why? why not?
-  TabReader.header( path )
-end
-
-end # class TabHashReader

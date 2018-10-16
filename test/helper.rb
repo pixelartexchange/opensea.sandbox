@@ -14,3 +14,7 @@ class TabReader
     "#{root}/test/data"
   end
 end
+
+
+
+TabReader.logger.level = :debug   ## turn on "global" logging
