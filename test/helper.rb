@@ -11,7 +11,7 @@ require 'tabreader'
 ## add test_data_dir helper
 class TabReader
   def self.test_data_dir
-    "#{root}/test/data"
+    "#{root}/datasets"
   end
 end
 

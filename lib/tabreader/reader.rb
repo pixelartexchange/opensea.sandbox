@@ -33,7 +33,7 @@ def logger()  self.class.logger; end
 
 
 
-def self.parse_line( line )
+def self.parse_line( line, sep: "\t" )
   ## check - can handle comments and blank lines too - why? why not?
   ## remove trailing newlines
 
@@ -60,14 +60,14 @@ def self.parse_line( line )
 #        next
 #      end
 
-  
+
     # note: trailing empty fields get (auto-)trimmed by split !!!!!!!
-    #  Solution!!  change split( "\t" ) to split( "\t", -1 ) 
-    #    If the limit parameter is omitted, trailing null fields are suppressed. 
-    #     If limit is a positive number, at most that number of fields will be returned 
-    #     (if limit is 1, the entire string is returned as the only entry in an array). 
+    #  Solution!!  change split( "\t" ) to split( "\t", -1 )
+    #    If the limit parameter is omitted, trailing null fields are suppressed.
+    #     If limit is a positive number, at most that number of fields will be returned
+    #     (if limit is 1, the entire string is returned as the only entry in an array).
     #     If negative, there is no limit to the number of fields returned, and trailing null fields are not suppressed.
-  values = line.split( "\t", -1 )
+  values = line.split( sep, -1 )
   logger.debug values.pretty_inspect   if logger.debug?
 
   values

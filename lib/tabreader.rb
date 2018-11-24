@@ -20,5 +20,5 @@ Tab     = TabReader
 TabHash = TabHashReader
 
 
-
-puts TabReader.banner   # say hello
+# say hello
+puts TabReader.banner     if $DEBUG || (defined?($RUBYCOCO_DEBUG) && $RUBYCOCO_DEBUG)
