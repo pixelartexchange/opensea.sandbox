@@ -1,7 +1,7 @@
 # tabreader - read in tabular datafiles in text in the tabular (TAB) format
 
-* home  :: [github.com/csv11/tabreader](https://github.com/csv11/tabreader)
-* bugs  :: [github.com/csv11/tabreader/issues](https://github.com/csv11/tabreader/issues)
+* home  :: [github.com/csvreader/tabreader](https://github.com/csvreader/tabreader)
+* bugs  :: [github.com/csvreader/tabreader/issues](https://github.com/csvreader/tabreader/issues)
 * gem   :: [rubygems.org/gems/tabreader](https://rubygems.org/gems/tabreader)
 * rdoc  :: [rubydoc.info/gems/tabreader](http://rubydoc.info/gems/tabreader)
 * forum :: [wwwmake](http://groups.google.com/group/wwwmake)
@@ -237,7 +237,7 @@ In practice tab separators are invisible or look like spaces and often you canno
 
 Thus, tab works great only and only (like space) if your values do NOT use spaces and you treat a tab like a space.
 
-(Source: [Awesome CSV @ CSV v1.1](https://github.com/csv11/awesome-csv))
+(Source: [Awesome CSV @ CSV v1.1](https://github.com/csvspecs/awesome-csv))
 
 
 
