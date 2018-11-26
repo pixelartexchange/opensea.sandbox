@@ -237,7 +237,7 @@ In practice tab separators are invisible or look like spaces and often you canno
 
 Thus, tab works great only and only (like space) if your values do NOT use spaces and you treat a tab like a space.
 
-(Source: [Awesome CSV @ CSV v1.1](https://github.com/csvspecs/awesome-csv))
+(Source: [Awesome CSV @ CSV,specs](https://github.com/csvspecs/awesome-csv))
 
 
 
