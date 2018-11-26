@@ -8,7 +8,7 @@ Hoe.spec 'tabreader' do
   self.summary = "tabreader - read in tabular datafiles in text in the tabular (TAB) format"
   self.description = summary
 
-  self.urls = ['https://github.com/csv11/tabreader']
+  self.urls = ['https://github.com/csvreader/tabreader']
 
   self.author = 'Gerald Bauer'
   self.email = 'wwwmake@googlegroups.com'
