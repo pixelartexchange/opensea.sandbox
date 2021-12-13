@@ -17,7 +17,8 @@ BASE = "https://api.opensea.io/api/v1/assets?collection={collection}&order_direc
 
 
 
-def download_images( range, collection, original: false )
+def download_images( range, collection,
+                        original: false )
   start = Time.now
   delay_in_s = 0.3
 
@@ -55,7 +56,9 @@ def download_images( range, collection, original: false )
                    'i'
                 end
 
-    copy_image( image_src, "./#{collection}/#{img_slug}/#{offset}.png")
+    ## note: will auto-add format file extension (e.g. .png, .jpg)
+    ##        depending on http content type!!!!!
+    copy_image( image_src, "./#{collection}/#{img_slug}/#{offset}" )
 
     puts "sleeping #{delay_in_s}s..."
     sleep( delay_in_s )
@@ -156,10 +159,25 @@ def copy_image( src, dest )
 
   if response.code == '200'
     puts "#{response.code} #{response.message}"
-    puts "  content_type: #{response.content_type}, content_length: #{response.content_length}"
 
+    content_type   = response.content_type
+    content_length = response.content_length
+    puts "  content_type: #{content_type}, content_length: #{content_length}"
 
-    File.open( dest, "wb" ) do |f|
+    format = if content_type =~ %r{image/jpeg}i
+                'jpg'
+             elsif content_type =~ %r{image/png}i
+                'png'
+             else
+              puts "!! error:"
+              puts " unknown image format content type: >#{content_type}<"
+              exit 1
+            end
+
+    ## todo/fix/add:
+    ##   make sure path exits - autocreate dirs
+
+    File.open( "#{dest}.#{format}", 'wb' ) do |f|
       f.write( response.body )
     end
   else
