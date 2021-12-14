@@ -48,19 +48,12 @@ def pixelate( img )
   end
 
 
-  ## use pixel[0,0] for background - why? why not?
-  background = img[0,0]
-
 
   PIXEL_OFFSET.each do |offset_x, x|
     PIXEL_OFFSET.each do |offset_y, y|
        pixel = img[offset_x,offset_y]
 
-        if pixel == background
-         dest[x,y] = 0  ## Color::TRANSPARENT
-       else
-         dest[x,y] =  pixel
-       end
+       dest[x,y] =  pixel
     end
   end
 

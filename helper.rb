@@ -12,9 +12,27 @@ require 'json'
 
 
 
+def convert_images( collection, from: 'jpg',
+                                to: 'png' )
+    files = Dir.glob( "./#{collection}/i/*.#{from}" )
+    puts "==> converting #{files.size} image(s) from #{from} to #{to}"
+
+    files.each_with_index do |file,i|
+      dirname   = File.dirname( file )
+      extname   = File.extname( file )
+      basename  = File.basename( file, extname )
+
+      cmd = "magick convert #{dirname}/#{basename}.#{from} #{dirname}/#{basename}.#{to}"
+
+      puts "   [#{i+1}/#{files.size}] - #{cmd}"
+      system( cmd )
+    end
+end
+
+
+
+
 BASE = "https://api.opensea.io/api/v1/assets?collection={collection}&order_direction=asc&offset={offset}&limit=1"
-
-
 
 
 def download_images( range, collection,
