@@ -1,5 +1,7 @@
 require 'pixelart'
 
+require_relative '../helper'
+
 
 ###############
 ## 512x512    21*24 = 504 + 8 = 512
@@ -108,7 +110,7 @@ range.each do |id|
 
     slug = "%03d" % num
     slug << "-"
-    slug << name.downcase.gsub( /[^a-z0-9 ]/s, '' ).gsub(' ', '_')
+    slug << slugify( name )
 
     puts "==> #{id}  - #{name} => #{num} | #{slug}"
 

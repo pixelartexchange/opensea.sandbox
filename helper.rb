@@ -11,6 +11,15 @@ require 'fileutils'         ### used ??? remove??
 require 'json'
 
 
+def slugify( name )
+  name.downcase.gsub( /[^a-z0-9 ()$-]/ ) do |_|
+     puts " !! WARN: asciify - found (and removing) non-ascii char >#{Regexp.last_match}<"
+     ''  ## remove - use empty string
+  end.gsub( ' ', '_')
+end
+
+
+
 
 def convert_images( collection, from: 'jpg',
                                 to: 'png' )

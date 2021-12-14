@@ -17,7 +17,7 @@ ids.each do |id|
   puts "==> #{id}"
   img = Image.read( "./thecryptogenius/ii/#{id}.png")
 
-  punks << img.mirror   # note: flip image horizontally
+  punks << img
 end
 
 punks.save( "./i/genius.png" )

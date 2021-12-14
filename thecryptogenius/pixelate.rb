@@ -1,5 +1,7 @@
 require 'pixelart'
 
+require_relative '../helper'
+
 
 ###############
 ## 512x512    21*24 = 504 + 8 = 512
@@ -75,25 +77,33 @@ end
 
     asset = assets[0]
 
-    name = asset['name']
+    asset_name = asset['name']
+    puts asset_name
 
     # e.g.  #1 - Leonardo Da Vinci  => 1
 
-    num  =  if m=name.match( /^#?(?<num>[0-9]+) -/ )
-                  m[:num].to_i( 10 )   ## note: add base 10 (e.g. 015=>15)
-            else
-              puts "!! ERROR - cannot find genius id number:"
-              pp asset
-              exit 1
-            end
+    name, num  =  if m=asset_name.match( /^#?(?<num>[0-9]+)[ ]+-[ ]+(?<name>.+)$/ )
+                     [m[:name].strip,
+                      m[:num].to_i( 10 )   ## note: add base 10 (e.g. 015=>15)
+                     ]
+                  else
+                    puts "!! ERROR - cannot find genius id number:"
+                    pp asset
+                    exit 1
+                  end
 
-    puts "==> #{id}  - #{name} => #{num}"
+    slug = "%03d" % num
+    slug << "-"
+    slug << slugify( name )
+
+    puts "==> #{id}  - #{name} => #{num} | #{slug}"
 
     img = Image.read( "./thecryptogenius/i/#{id}.png" )
     puts "     #{img.width}x#{img.height}"
     pix = pixelate( img )
 
-    pix.save( "./thecryptogenius/ii/#{num}.png")
+    ## note: flip image horizontally (mirror) to make from left to right-looking
+    pix.mirror.save( "./thecryptogenius/ii/#{slug}.png")
 end
 
 

@@ -1,5 +1,7 @@
 require 'pixelart'
 
+require_relative '../helper'
+
 
 ###############
 ## 512x512    21*24 = 504 + 8 = 512
@@ -77,27 +79,35 @@ range.each do |id|
        exit 1
     end
 
-    asset = assets[0]
+    asset      = assets[0]
+    asset_name = asset['name']
+    puts asset_name
 
-    name = asset['name']
+    ##
+    #  parse/split asset['name'] into (character) name and decimal num(ber)
+    #    e.g.  HistoPunk 1 - Vincent van Gogh  => 1
 
-    # e.g.  HistoPunk 1 - Vincent van Gogh  => 1
-
-    num  =  if m=name.match( /^HistoPunk (?<num>[0-9]+) -/ )
-                  m[:num].to_i( 10 )   ## note: add base 10 (e.g. 015=>15)
+    name, num  =  if m=asset_name.match( /^HistoPunk (?<num>[0-9]+)[ ]+-[ ]+(?<name>.+)$/ )
+                    [m[:name].strip,
+                     m[:num].to_i( 10 )   ## note: add base 10 (e.g. 015=>15)
+                    ]
             else
               puts "!! ERROR - cannot find id number:"
               pp asset
               exit 1
             end
 
-    puts "==> #{id}  - #{name} => #{num}"
+    slug = "%03d" % num
+    slug << "-"
+    slug << slugify( name )
+
+    puts "==> #{id}  - #{name} => #{num} | #{slug}"
 
     img = Image.read( "./#{collection}/i/#{id}.png" )
     puts "     #{img.width}x#{img.height}"
     pix = pixelate( img )
 
-    pix.save( "./#{collection}/ii/#{num}.png")
+    pix.save( "./#{collection}/ii/#{slug}.png")
 end
 
 
