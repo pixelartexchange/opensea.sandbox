@@ -48,36 +48,12 @@ def pixelate( img )
   end
 
 
-  ## use pixel[0,0] for background - why? why not?
-  background = img[0,0]
-  bh,bs,bl =  Color.to_hsl( background )
-  bh = (bh % 360)  ## might might negative degree (always make positive)
-
-
 
   PIXEL_OFFSET.each do |offset_x, x|
     PIXEL_OFFSET.each do |offset_y, y|
        pixel = img[offset_x,offset_y]
 
-        ## check for more transparents
-          ##   not s  is 0.0 to 0.99  (100%)
-          ##   and l  is 0.0 to 0.99  (100%)
-        h,s,l =  Color.to_hsl( pixel )
-        h = (h % 360)  ## might might negative degree (always make positive)
-
-        ## try some kind-of fuzzy "heuristic" match on background color
-        if ((h >= bh-5) && (h <= bh+5)) &&
-           ((s >= bs-0.07) && (s <= bs+0.07)) &&
-           ((l >= bl-0.07) && (l <= bl+0.07))
-         dest[x,y] = 0  ## Color::TRANSPARENT
-
-         if h != bh || s != bs || l != bl
-            # report fuzzy background color
-            puts "  #{x}/#{y} fuzzy background #{[h,s,l]} ~= #{[bh,bs,bl]}"
-         end
-       else
-         dest[x,y] =  pixel
-       end
+       dest[x,y] =  pixel
     end
   end
 
@@ -122,3 +98,36 @@ end
 
 
 puts "bye"
+
+
+
+__END__
+
+## use pixel[0,0] for background - why? why not?
+background = img[0,0]
+bh,bs,bl =  Color.to_hsl( background )
+bh = (bh % 360)  ## might might negative degree (always make positive)
+
+
+pixel = img[offset_x,offset_y]
+
+## check for more transparents
+  ##   not s  is 0.0 to 0.99  (100%)
+  ##   and l  is 0.0 to 0.99  (100%)
+h,s,l =  Color.to_hsl( pixel )
+h = (h % 360)  ## might might negative degree (always make positive)
+
+## try some kind-of fuzzy "heuristic" match on background color
+if ((h >= bh-5) && (h <= bh+5)) &&
+   ((s >= bs-0.07) && (s <= bs+0.07)) &&
+   ((l >= bl-0.07) && (l <= bl+0.07))
+ dest[x,y] = 0  ## Color::TRANSPARENT
+
+ if h != bh || s != bs || l != bl
+    # report fuzzy background color
+    puts "  #{x}/#{y} fuzzy background #{[h,s,l]} ~= #{[bh,bs,bl]}"
+ end
+else
+ dest[x,y] =  pixel
+end
+
