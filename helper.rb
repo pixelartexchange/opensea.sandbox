@@ -195,6 +195,8 @@ def copy_image( src, dest )
                 'jpg'
              elsif content_type =~ %r{image/png}i
                 'png'
+              elsif content_type =~ %r{image/gif}i
+                'gif'
              else
               puts "!! error:"
               puts " unknown image format content type: >#{content_type}<"
@@ -214,6 +216,61 @@ def copy_image( src, dest )
   end
 end
 
+
+
+
+#############
+# read meta data into struct
+
+class Meta
+  def initialize( txt )
+    @data = JSON.parse( txt )
+
+    assets = @data['assets']
+    if assets.size != 1
+      puts "!! error - expected one asset per file only - got #{assets.size} - sorry"
+      exit 1
+    end
+
+    @asset = assets[0]
+  end
+
+  def name
+    @name ||= @asset['name']
+  end
+
+  def traits
+    @traits ||= begin
+                   traits = {}
+                   @asset[ 'traits' ].each do |t|
+                      trait_type = t['trait_type'].strip
+                      h = {}
+                      if traits.has_key?( trait_type )
+                        puts "!! error - duplicate trait type >#{trait_type}< not allowed for now, sorry"
+                        pp @assets['traits']
+                        puts "---"
+                        pp @data
+                        exit 1
+                      end
+                      ## add all key/value pairs (except trait_type)
+                      t.each do |k,v|
+                         next if k == 'trait_type'
+                         h[k] = v
+                      end
+                      traits[ trait_type] = h
+                   end
+
+                   traits
+                  end
+    end
+end  # class Meta
+
+
+def read_meta( path )
+  txt = File.open( path, 'r:utf-8') { |f| f.read }
+  meta = Meta.new( txt )
+  meta
+end
 
 
 
