@@ -58,3 +58,33 @@ composite.save( "./i/quiz_ii.png" )
 composite.zoom(2).save( "./i/quiz_ii@2x.png" )
 composite.zoom(4).save( "./i/quiz_ii@4x.png" )
 
+
+
+autocrats = [
+  Image.read( './star-punks1/ii/donald_trump.png' ),
+  Image.read( './star-punks1/ii/vladimir_putin.png' ),
+  Image.read( './star-punks1/ii/alexander_lukashenko.png' ),
+
+  Image.read( './star-punks1/ii/recep_tayyip_erdoan.png' ),
+  Image.read( './star-punks1/ii/xi_jinping.png' ),
+  Image.read( './star-punks1/ii/kim_jong-un.png' ),
+
+  Image.read( './star-punks1/ii/adolf_hitler.png' ),
+  Image.read( './star-punks1/ii/joseph_stalin.png' ),
+  Image.read( './star-punks1/ii/mao_zedong.png' ),
+
+  # Image.read( './star-punks1/ii/fidel_castro.png' ),
+  # Image.read( './star-punks1/ii/darth_vader.png' ),
+]
+
+
+## quiz no. 3
+composite = ImageComposite.new( 3, 3, width: 32, height: 32 )
+
+autocrats.each do |punk|
+  composite << punk
+end
+
+composite.save( "./i/quiz_iii.png" )
+composite.zoom(2).save( "./i/quiz_iii@2x.png" )
+composite.zoom(4).save( "./i/quiz_iii@4x.png" )
