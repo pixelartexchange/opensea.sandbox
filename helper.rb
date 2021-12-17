@@ -236,8 +236,9 @@ class Meta
   end
 
   def name
-    @name ||= @asset['name']
+    @name ||= _normalize( @asset['name'] )
   end
+
 
   def traits
     @traits ||= begin
@@ -262,6 +263,19 @@ class Meta
 
                    traits
                   end
+    end
+
+
+
+### "private"  convenience / helper methods
+    def _normalize( str )
+       ## normalize string
+       ##   remove leading and trailing spaces
+       ##   collapse two and more spaces into one
+       ##    change unicode space to ascii
+       str = str.gsub( "\u{00a0}", ' ' )
+       str = str.strip.gsub( /[ ]{2,}/, ' ' )
+       str
     end
 end  # class Meta
 
