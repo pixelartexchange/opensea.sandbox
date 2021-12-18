@@ -14,7 +14,7 @@ require_relative '../helper'
 collection = 'bwpunks'
 range      = (0..149)   # 150 items
 
-# download_meta( range, collection )
+download_meta( range, collection )
 
 download_images( range, collection )
 
