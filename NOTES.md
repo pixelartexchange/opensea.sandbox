@@ -33,6 +33,16 @@
     - check is 48x48 ?
 
 
+and some more
+
+https://opensea.io/collection/politicpunks - 51 items incl. collage(s)
+
+https://opensea.io/collection/cryptowooks  - 55 items
+
+https://opensea.io/collection/checkerspunks - 9 items
+
+https://opensea.io/collection/niftypunks - 49 items
+
 
 
 
