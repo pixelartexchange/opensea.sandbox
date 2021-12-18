@@ -239,6 +239,11 @@ class Meta
     @name ||= _normalize( @asset['name'] )
   end
 
+  def token_id    ## note: keep id as string as is - why? why not?
+    @token_id ||= @asset['token_id']
+  end
+
+
 
   def traits
     @traits ||= begin
