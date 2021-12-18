@@ -39,9 +39,9 @@
 2x <br> ![](mafia@2x.png)
 
 
-## Punks, The Sci-Fi Edition
+## Punks, The Sci-Fi and Fantasy Edition
 
-![](scifi).png)
+![](scifi.png)
 
 2x <br> ![](scifi@2x.png)
 
