@@ -1,7 +1,7 @@
 # Pixel Art Collection Gallery (& Downloads)
 
 
-For 2x, see the [Pixel Art (2x) Collection Gallery »](README@2X.md)
+For 2x, see the [Pixel Art (2x) Collection Gallery »](README@2x.md)
 
 
 
