@@ -1,11 +1,15 @@
-# Pixel Art Collection Gallery
+# Pixel Art Collection Gallery (& Downloads)
+
+
+For 2x, see the [Pixel Art (2x) Collection Gallery »](README@2X.md)
+
+
 
 
 ## Punks, The Black & White (1-Bit) Edition
 
 ![](bw.png)
 
-2x <br> ![](bw@2x.png)
 
 
 
@@ -13,7 +17,6 @@
 
 ![](unofficial.png)
 
-2x <br> ![](unofficial@2x.png)
 
 
 
@@ -21,7 +24,6 @@
 
 ![](genius.png)
 
-2x <br> ![](genius@2x.png)
 
 
 
@@ -29,14 +31,12 @@
 
 ![](history.png)
 
-2x <br> ![](history@2x.png)
 
 
 ## Punks, The (Sport) Athletes Edition
 
 ![](athletes.png)
 
-2x <br> ![](athletes@2x.png)
 
 
 
@@ -44,14 +44,12 @@
 
 ![](mafia.png)
 
-2x <br> ![](mafia@2x.png)
 
 
 ## Punks, The Sci-Fi and Fantasy Edition
 
 ![](scifi.png)
 
-2x <br> ![](scifi@2x.png)
 
 
 
@@ -60,6 +58,5 @@
 
 ![](wiener.png)
 
-2x <br> ![](wiener@2x.png)
 
 
