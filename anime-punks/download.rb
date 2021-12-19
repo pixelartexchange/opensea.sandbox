@@ -14,9 +14,9 @@ require_relative '../helper'
 collection = 'anime-punks'
 range      = (0..974)   # 975 items
 
-# download_meta( range, collection )
+download_meta( range, collection )
 
-# download_images( range, collection )
+download_images( range, collection )
 
 ## note: some images are in jpg (142), some in gif (11), most in png
 convert_images( collection, from: 'jpg' )

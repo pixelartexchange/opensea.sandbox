@@ -33,6 +33,8 @@
     - check is 48x48 ?
 
 
+- <https://opensea.io/collection/monkepunks> - 999 items
+
 and some more
 
 https://opensea.io/collection/politicpunks - 51 items incl. collage(s)
@@ -42,6 +44,20 @@ https://opensea.io/collection/cryptowooks  - 55 items
 https://opensea.io/collection/checkerspunks - 9 items
 
 https://opensea.io/collection/niftypunks - 49 items
+
+https://opensea.io/collection/punkachus
+
+
+
+
+
+and some more pixel art collections
+
+https://opensea.io/collection/beastopia-pixelbeasts - ~10 000 items  (24x24px)
+
+https://opensea.io/CryptoSkulls/cryptoskulls - ~10 000 items
+
+
 
 
 
