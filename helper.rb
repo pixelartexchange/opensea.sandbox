@@ -305,6 +305,32 @@ end
 
 
 module Pixelart
+
+class Image
+  def sample( offsets )
+    ## note: for now always assume square image (e.g. 24x24, 32x32 and such)
+    width = height = offsets.size
+
+    puts "     #{self.width}x#{self.height} => #{width}x#{height}"
+
+
+    dest = Image.new( width, height )
+
+    offsets.each do |offset_x, x|
+      offsets.each do |offset_y, y|
+         pixel = self[offset_x,offset_y]
+
+         dest[x,y] =  pixel
+      end
+    end
+
+    dest
+  end
+  alias_method :pixelate, :sample
+end  # class Image
+
+
+
 class ImageComposite
 
 
