@@ -35,9 +35,6 @@ convert_images( collection, from: 'gif' )
 # [11/11] - magick convert ./anime-punks/i/412.gif ./anime-punks/i/412.png
 
 
-## todo: filter out
-##   no. 87 - is "rotated" special artwork (78x128)
-##   no. 375 - is not "scaled" pixel artwork (512x512)
 
 
 

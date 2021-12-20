@@ -5,7 +5,7 @@ require_relative '../helper'
 
 ###############
 ## 512x512  (30x30)
-##   assume 17px per pixel 17x30 = 510 +2 = 512
+##   assume 17px per pixel 17x30 = 510 + 2 = 512
 ##
 ##  e.g.   30.times {|i| puts "#{10+i*17} => #{i}," }
 
@@ -47,7 +47,9 @@ PIXEL_OFFSET = {
 def pixelate( img )
   dest = Image.new( 30, 30 )
 
-  if img.width == 512 && img.height == 512
+  ##  allow some special cases
+  ##   e.g 512x510
+  if img.width == 512 && (img.height == 512 || img.height == 510)
     ## do nothing; everything ok
   else
     puts "!! ERROR - unknown image dimension #{img.width}x#{img.height}; sorry"
@@ -69,23 +71,34 @@ end
 
 
 collection = 'anime-punks'
-range      = (0..9)  #  (0..974)   # 975 items
+range      = (0..974)   # 975 items
+
 
 
 
 range.each do |id|
+   ## note: filter out / skip some non-standard / custom "special art" items
+   ##   no. 87 - is "rotated" special artwork (78x128)
+   ##   no. 375 - is not "scaled" pixel artwork (512x512)
+    next if [87, 375].include?( id )
+
 
     meta = read_meta( "./#{collection}/meta/#{id}.json" )
 
     puts meta.name
 
-    # e.g    Goku #1           => 1
-    #        Kiba Adult #149   => 149
+    # e.g    Goku #1             => 1
+    #        Kiba Adult #149     => 149
+    #        Colossus Titan 562  => 562
+    #
+    #       Takashi Murakami ❁
 
-    name, num  =  if m=meta.name.match( /^(?<name>.+) #(?<num>[0-9]+)$/ )
+    name, num  =  if m=meta.name.match( /^(?<name>.+) #?(?<num>[0-9]+)$/ )
                      [m[:name].strip,
                       m[:num].to_i( 10 )   ## note: add base 10 (e.g. 015=>15)
                      ]
+                  elsif meta.name == 'Takashi Murakami ❁'
+                     ['Takashi Murakami', 999]
                   else
                     puts "!! ERROR - cannot find id number in >#{meta.name}<:"
                     pp meta
