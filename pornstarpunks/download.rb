@@ -16,7 +16,7 @@ collection = 'pornstarpunks'
 
 range      = (0..89)   #  90 items
 
-# download_meta( range, collection )
+download_meta( range, collection )
 
 download_images( range, collection )
 puts "bye"
