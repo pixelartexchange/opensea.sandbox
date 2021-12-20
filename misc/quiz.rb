@@ -88,3 +88,35 @@ end
 composite.save( "./i/quiz_iii.png" )
 composite.zoom(2).save( "./i/quiz_iii@2x.png" )
 composite.zoom(4).save( "./i/quiz_iii@4x.png" )
+
+
+
+paintings = [
+  Image.read( './clout-punks/ii/girl_with_a_pearl_earring.png' ),
+  Image.read( './clout-punks/ii/american_gothic.png' ),
+  Image.read( './clout-punks/ii/michelangelo_portrait.png' ),
+
+  Image.read( './clout-punks/ii/van_gogh_self-portrait.png' ),
+  Image.read( './clout-punks/ii/mona_lisa.png' ),
+  Image.read( './clout-punks/ii/pablo_picasso.png' ),
+
+  Image.read( './clout-punks/ii/a_sunday_afternoon_on_the_island_of_la_grande_jatte.png' ),
+  Image.read( './clout-punks/ii/the_son_of_man.png' ),
+  Image.read( './clout-punks/ii/the_scream.png' ),
+
+#  Image.read( './clout-punks/ii/claude_monet_self_portrait.png' ),
+]
+
+
+## quiz no. 3
+composite = ImageComposite.new( 3, 3 )
+
+paintings.each do |punk|
+  composite << punk
+end
+
+composite.save( "./i/quiz_iiii.png" )
+composite.zoom(2).save( "./i/quiz_iiii@2x.png" )
+composite.zoom(4).save( "./i/quiz_iiii@4x.png" )
+composite.zoom(8).save( "./i/quiz_iiii@8x.png" )
+

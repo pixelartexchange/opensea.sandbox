@@ -14,10 +14,9 @@ require_relative '../helper'
 collection = 'bladerunner-punks'
 
 
-range      = (24..999)   #  first 1000 items
+range      = (0..999)   #  first 1000 items
 
 download_meta( range, collection )
-
 
 ##
 # note - [16,23].json is missing image urls

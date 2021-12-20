@@ -46,7 +46,7 @@ PIXEL_OFFSET = {
 
 
 collection = 'bladerunner-punks'
-range      =  (0..19) ##(0..999)
+range      =  (0..999)
 
 
 
