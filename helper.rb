@@ -256,13 +256,14 @@ class Meta
                    @asset[ 'traits' ].each do |t|
                       trait_type = t['trait_type'].strip
                       h = {}
-                      if traits.has_key?( trait_type )
-                        puts "!! error - duplicate trait type >#{trait_type}< not allowed for now, sorry"
-                        pp @assets['traits']
-                        puts "---"
-                        pp @data
-                        exit 1
-                      end
+                      # todo/fix:  change to a different model with multiple values!!!
+                      #if traits.has_key?( trait_type )
+                      #  puts "!! error - duplicate trait type >#{trait_type}< not allowed for now, sorry"
+                      #  pp @assets['traits']
+                      #  puts "---"
+                      #  pp @data
+                      #  exit 1
+                      #end
                       ## add all key/value pairs (except trait_type)
                       t.each do |k,v|
                          next if k == 'trait_type'
@@ -327,6 +328,24 @@ class Image
     dest
   end
   alias_method :pixelate, :sample
+
+
+  def transparent
+    img = Image.new( width, height )
+
+    background = self[0,0]
+    width.times do |x|
+      height.times do |y|
+        color = self[x,y]
+        if color == background
+          img[x,y] = 0
+        else
+          img[x,y] = color
+        end
+      end
+    end
+    img
+  end
 end  # class Image
 
 
