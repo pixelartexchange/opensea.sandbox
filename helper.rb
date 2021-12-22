@@ -17,7 +17,7 @@ require 'pixelart'
 
 
 def slugify( name )
-  name.downcase.gsub( /[^a-z0-9 ()$-]/ ) do |_|
+  name.downcase.gsub( /[^a-z0-9 ()$_-]/ ) do |_|
      puts " !! WARN: asciify - found (and removing) non-ascii char >#{Regexp.last_match}<"
      ''  ## remove - use empty string
   end.gsub( ' ', '_')
@@ -330,17 +330,45 @@ class Image
   alias_method :pixelate, :sample
 
 
-  def transparent
+  def transparent( style = :solid, fuzzy: false )
     img = Image.new( width, height )
 
     background = self[0,0]
+
+    bh,bs,bl =  Color.to_hsl( background )
+    bh = (bh % 360)  ## might might negative degree (always make positive)
+
+
     width.times do |x|
       height.times do |y|
-        color = self[x,y]
-        if color == background
-          img[x,y] = 0
+        pixel = self[x,y]
+
+        if fuzzy
+          ## check for more transparents
+            ##   not s  is 0.0 to 0.99  (100%)
+            ##   and l  is 0.0 to 0.99  (100%)
+          h,s,l =  Color.to_hsl( pixel )
+          h = (h % 360)  ## might might negative degree (always make positive)
+
+          ## try some kind-of fuzzy "heuristic" match on background color
+          if ((h >= bh-5) && (h <= bh+5)) &&
+             ((s >= bs-0.07) && (s <= bs+0.07)) &&
+             ((l >= bl-0.07) && (l <= bl+0.07))
+           img[x,y] = 0  ## Color::TRANSPARENT
+
+           if h != bh || s != bs || l != bl
+              # report fuzzy background color
+              puts "  #{x}/#{y} fuzzy background #{[h,s,l]} ~= #{[bh,bs,bl]}"
+           end
+          else
+            img[x,y] =  pixel
+          end
         else
-          img[x,y] = color
+           if pixel == background
+            img[x,y] = 0   ## Color::TRANSPARENT
+           else
+             img[x,y] =  pixel
+           end
         end
       end
     end

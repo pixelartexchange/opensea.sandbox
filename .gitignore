@@ -2,6 +2,9 @@
 # exclude all cache (image, meta) directories
 
 /tmp
+/misc/tmp
+
+
 
 /thecryptogenius/i
 /thecryptogenius/i_jpg
