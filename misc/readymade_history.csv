@@ -4,31 +4,65 @@ path,                            name
 == religion
 
 004-mother_teresa.png
-
 023-jesus_christ.png
-
 068-mary.png
-
 074-saint_peter.png
-
 147-abraham.png
+
+
+133-king_david_(michelangelo).png,   King David
+
+
+084-siddhartha_gautama_boeddha.png,    Siddhartha Gautama Buddha
+
+
+
+== philosophy
+
+020-john_stuart_mill.png
+069-vatsyayana.png
+122-hippocrates.png
+
+
+
+
+== history / mythology
+
+050-achilles.png
+070-jeanne_darc.png
+083-vlad_dracula.png
+100-hercules.png
+135-thor.png
+
+
+
+== celebrity-n-royality
+
+095-lady_diana.png
+086-grigori_raspoetin.png,    Grigori Rasputin
+146-jackie_kennedy.png
+
 
 
 
 == politics
 
-
 008-napoleon_bonaparte.png
 010-queen_victoria.png
-
+015-winston_churchill.png
 017-che_guevara.png
 018-nelson_mandela.png
-015-winston_churchill.png
+019-mahatma_gandhi.png
+
+039-cleopatra_vii.png,       Cleopatra
+
+046-soekarno.png
 
 060-dzjengis_khan.png
 071-fidel_castro.png
 
 091-mao_zedong.png
+078-jozef_stalin.png
 
 
 
@@ -40,34 +74,186 @@ path,                            name
 
 
 
+== geography / discoverers
+
+016-amelia_earhart.png
+055-christoffel_columbus.png,     Christopher Columbus
+
+
 == science / mathematics
 
 
 002-albert_einstein.png
+042-stephen_hawking.png
 138-charles_darwin.png
+140-ada_lovelace.png
 
 
 
 == literature / writers
 
+006-maya_angelou.png
 009-charles_dickens.png
+012-anne_frank.png
+064-william_shakespeare.png
 075-mark_twain.png
 112-ernest_miller_hemingway.png
+
+
+
 
 
 == cinema / actors
 
 007-marilyn_monroe.png
+034-bruce_lee.png
+048-charlie_chaplin.png
+067-sean_connery.png
+065-brandon_lee.png
+076-audrey_hepburn.png
+077-chadwick_boseman.png
+101-oliver_hardy.png
+102-stan_laurel.png
+139-james_dean.png
+
+
+== cinema / star wars
+
+033-darth_vader.png
+085-princess_leia.png
+149-obi-wan_kenobi.png
+
+
+== cinema / fictional characters
+
+035-the_joker.png
+079-don_vito_corleone.png
+093-tony_montana.png
+115-jason_voorhees.png
+
 
 
 == music / classic
 
 011-ludwig_van_beethoven.png
+080-wolfgang_amadeus_mozart.png
 
 
+
+== music / pop-n-rock
+
+013-michael_jackson.png
+021-elvis_presley.png
+022-whitney_houston.png
+026-bob_marley.png
+028-freddie_mercury.png
+029-john_lennon.png
+032-kurt_cobain.png
+047-herman_brood.png
+052-amy_winehouse.png
+053-frank_sinatra.png
+056-prince.png
+061-ray_charles.png
+063-leonard_cohen.png
+072-jimi_hendrix.png
+073-avicii.png
+082-david_bowie.png
+089-james_brown.png
+094-jim_morrison.png
+096-marvin_gaye.png
+
+
+
+
+== music / hip-hop-n-rappers
+
+031-tupac_shakur.png
+049-mac_miller.png
+092-xxxtentacion.png
+
+
+
+### todo/fix - change to business / comics /  ???
+
+== comics
+
+024-tony_stark.png
+098-walt_disney.png
+
+
+
+== art / classic
+
+014-leonardo_da_vinci.png
 
 == art / modern
 
 001-vincent_van_gogh.png
+036-andy_warhol.png
+037-jean-michel_basquiat.png
+045-bob_ross.png
+051-salvador_dali.png
+057-frida_kahlo.png
+058-pablo_picasso.png
+
+
+
+== art / paintings
+
+054-meisje_met_de_parel.png,   Girl with a Pearl Earring
+
+
+
+== sports
+
+003-muhammad_ali.png
+
+
+== sports / football
+
+027-diego_maradona.png
+059-johan_cruijff.png,    Johan Cruyff
+
+== sports / basketball
+
+025-kobe_bryant.png
+
+== sports / formula 1
+
+062-ayrton_senna.png
+
+
+== business
+
+038-steve_jobs.png
+
+
+== business / fashion
+
+066-karl_lagerfeld.png
+090-coco_chanel.png
+148-alexander_mcqueen.png
+
+
+
+== business / brand-n-advertising characters
+
+040-ronald_mcdonald.png
+041-colonel_sanders.png
+
+
+
+### todo/fix - change to business / crypto /  ???
+== crypto / celebrity-n-mythology
+
+130-satoshi_nakamoto.png
+
+
+
+== true crime / drugs
+
+043-pablo_escobar.png
+087-al_capone.png
+
 
 

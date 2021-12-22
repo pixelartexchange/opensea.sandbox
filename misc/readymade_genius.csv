@@ -21,6 +21,8 @@ path,                            name
 003-mahatma_gandhi.png,         Mahatma Ghandi
 024-nelson_mandela.png,         Nelson Mandela
 056-napoleon_bonaparte.png,     Napoleon Bonaparte
+086-qin_shi_huang.png
+
 
 
 
@@ -32,25 +34,43 @@ path,                            name
 011-isaac_newton.png
 015-albert_einstein.png
 012-charles_darwin.png
+020-rita_levi-montalcini.png
 021-sigmund_freud.png
+031-alan_turing.png
+040-louis_pasteur.png
+041-ren_descartes.png,        Rene Descartes
+047-rosalind_franklin.png
 048-johannes_kepler.png
 049-nicolaus_copernicus.png
+050-stephen_hawking.png
 060-gregor_mendel.png
+063-ada_lovelace.png
+
 
 
 == geography / discoverers
 
 057-christopher_columbus.png
+042-neil_armstrong.png
+
+
 
 
 == literature / writers
 
 045-dante_alighieri.png
 025-william_shakespeare.png
+089-lev_tolstoj.png
+
+
+== comics
+055-stan_lee.png
+
 
 
 == cinema / actors
 
+044-charlie_chaplin.png
 081-marilyn_monroe.png
 
 
@@ -66,18 +86,27 @@ path,                            name
 == music / pop-n-rock
 
 067-michael_jackson.png
+072-john_lennon.png
 076-freddie_mercury.png
-087-elvis_presley.png
+079-david_bowie.png
+082-bob_marley.png
 083-jimi_hendrix.png
+087-elvis_presley.png
+088-whitney_houston.png
 
 
 
 == art / classic
 
 001-leonardo_da_vinci.png
+005-giotto.png
 007-sandro_botticelli.png
+019-raffaello_sanzio.png
 022-michelangelo_buonarroti.png
 023-johannes_vermeer.png
+033-caravaggio.png
+053-donatello.png
+
 
 
 == art / modern
@@ -86,17 +115,44 @@ path,                            name
 004-pablo_picasso.png
 010-vincent_van_gogh.png
 014-salvador_dal.png,          Salvador Dali
+017-douard_manet.png,          Edouard Manet
 028-gustav_klimt.png
+029-claude_monet.png
+043-andy_warhol.png
 061-jean-michel_basquiat.png
+065-keith_haring.png
+074-jackson_pollock.png
+075-auguste_bartholdi.png
+
+
+### change to design / architects  ???
+##   and      design / fashion     ???
+== buildings / architects
+
+062-le_corbusier.png
+064-frank_lloyd_wright.png
+070-antoni_gaud.png,                 Antoni Gaudi
+071-ludwig_mies_van_der_rohe.png
+073-gustave_eiffel.png
 
 
 
+### todo/fix - change to business / innovators-n-inventors  ???
 == innovators / inventors
 
 013-johannes_gutenberg.png
+016-guglielmo_marconi.png          ## inventor of radio
 026-karl_benz.png
 030-thomas_alva_edison.png
+032-george_stephenson.png          ## railway innovator
+034-antonio_meucci.png
+035-louis_braille.png
+036-samuel_morse.png
+037-wilbur_wright.png
+038-orville_wright.png
+
 046-nikola_tesla.png
+
 
 
 == business
@@ -105,6 +161,10 @@ path,                            name
 085-henry_ford.png
 084-enzo_ferrari.png
 
+
+== sports
+
+080-muhammad_ali.png
 
 
 == sports / football

@@ -28,6 +28,11 @@ end
 
 recs = []
 recs += read_recs( './misc/readymade_genius.csv',  collection: 'thecryptogenius' )
+
+puts "  #{recs.size} record(s) in thecryptogenius collections"
+#=> 90 record(s) in thecryptogenius
+
+
 recs += read_recs( './misc/readymade_history.csv', collection: 'histopunks' )
 
 
@@ -36,9 +41,8 @@ puts "  #{recs.size} records:"
 pp recs
 
 
-
-# rootdir = './misc/tmp'
-rootdir = '../punks.readymade'
+rootdir = './misc/tmp'
+# rootdir = '../punks.readymade'
 
 
 ###
