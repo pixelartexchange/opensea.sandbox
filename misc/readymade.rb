@@ -35,6 +35,7 @@ puts "  #{recs.size} record(s) in thecryptogenius collections"
 
 recs += read_recs( './misc/readymade_history.csv', collection: 'histopunks' )
 
+recs += read_recs( './misc/readymade_stars.csv', collection: 'star-punks1' )
 
 
 puts "  #{recs.size} records:"
@@ -51,6 +52,7 @@ rootdir = './misc/tmp'
 ##
 ##  fix: pipe smoke in Winston Churchill!!! - change to alpha channel color? others too???
 ##
+
 
 
 
@@ -74,9 +76,52 @@ recs.each do |rec|
 
   puts "#{path} =>  #{name}   (#{category})"
 
+  ## skip for now - do not regenerate on every run for now
+  next if path.index( 'thecryptogenius/' )
+  next if path.index( 'histopunks/' )
+
   img = Image.read( path )
-  img = if path.index( 'thecryptogenius/' )
-            img.transparent( fuzzy: true )
+  img = if path.index( 'star-punks1/' )
+            ## note: crop from 32x32 to 24x24
+            y_offset = if path.index('mohamed_salah')
+                           7
+                       else
+                           8
+                       end
+            ['albert_einstein',
+            'adele',
+            'annie_lennox',
+            'al_capone',
+            'andreas_antonopoulos',
+            'arthur_schopenhauer',
+            'freddie_mercury',
+            'friedrich_nietzsche',
+            'julius_caesar',
+            'kim_jong-un',
+            'mao_zedong',
+            'marilyn_manson',
+            'martin_heidegger',
+            'muhammad_ali',
+            'nikola_tesla',
+            'pablo_escobar',
+            'queen_elizabeth_ii',
+            'salvador_dal',
+            'sigmund_freud',
+            'vincent_van_gogh',
+            'terminator',
+            'vitalik_buterin',
+            ].each do |name|
+                if path.index( name )
+                   y_offset = 6
+                   break
+                end
+              end
+            x_offset = if path.index( 'lewis_hamilton' )
+                          2
+                       else
+                          4
+                       end
+            img.crop( x_offset, y_offset, 24, 24 ).transparent
         else
             img.transparent( fuzzy: true )
         end

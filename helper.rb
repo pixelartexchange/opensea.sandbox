@@ -308,6 +308,12 @@ end
 module Pixelart
 
 class Image
+  def crop( x, y, crop_width, crop_height )
+    self.class.new(  nil, nil,
+                     self.image.crop( x,y, crop_width, crop_height ) )
+  end
+
+
   def sample( offsets )
     ## note: for now always assume square image (e.g. 24x24, 32x32 and such)
     width = height = offsets.size
