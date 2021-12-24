@@ -37,6 +37,10 @@ recs += read_recs( './misc/readymade_history.csv', collection: 'histopunks' )
 
 recs += read_recs( './misc/readymade_stars.csv', collection: 'star-punks1' )
 
+recs += read_recs( './misc/readymade_clout.csv', collection: 'clout-punks' )
+
+recs += read_recs( './misc/readymade_unofficial.csv', collection: 'unofficialpunks' )
+
 
 puts "  #{recs.size} records:"
 pp recs
@@ -79,6 +83,9 @@ recs.each do |rec|
   ## skip for now - do not regenerate on every run for now
   next if path.index( 'thecryptogenius/' )
   next if path.index( 'histopunks/' )
+  next if path.index( 'star-punks1/' )
+
+
 
   img = Image.read( path )
   img = if path.index( 'star-punks1/' )
@@ -122,6 +129,9 @@ recs.each do |rec|
                           4
                        end
             img.crop( x_offset, y_offset, 24, 24 ).transparent
+        elsif path.index( 'clout-punks/' ) ||
+              path.index( 'unofficialpunks/' )
+          img.transparent
         else
             img.transparent( fuzzy: true )
         end
