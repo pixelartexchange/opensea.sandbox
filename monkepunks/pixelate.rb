@@ -80,7 +80,7 @@ range.each do |id|
     end
 
 
-    pix = pixelate( img, PIXEL_OFFSET )
+    pix = img.pixelate( PIXEL_OFFSET )
 
     pix.save( "./#{collection}/ii/#{slug}.png")
 end
