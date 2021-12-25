@@ -16,8 +16,15 @@ def read_recs( path, collection: )
     if values[0].strip.start_with?( '=' )
       category = values[0].gsub( '=', '' ).strip   ## remove leading ===
     else
-      recs << ["./#{collection}/ii/#{row['path'].strip}",
-               row['name'] || row['path'].sub( /^[0-9]+-/, '' ).sub( /\.png$/, '' ).strip,
+        ## auto-check if override exits  (in dir /iii instead of /ii)
+        img_path = row['path'].strip
+        img_fullpath = if File.exist?( "./#{collection}/iii/#{img_path}" )
+                      "./#{collection}/iii/#{img_path}"
+                   else
+                      "./#{collection}/ii/#{img_path}"
+                   end
+      recs << [ img_fullpath,
+               row['name'] || img_path.sub( /^[0-9]+-/, '' ).sub( /\.png$/, '' ).strip,
                category
               ]
    end
@@ -40,6 +47,9 @@ recs += read_recs( './misc/readymade_stars.csv', collection: 'star-punks1' )
 recs += read_recs( './misc/readymade_clout.csv', collection: 'clout-punks' )
 
 recs += read_recs( './misc/readymade_unofficial.csv', collection: 'unofficialpunks' )
+
+recs += read_recs( './misc/readymade_genius-ii.csv',  collection: 'genius-punks' )
+
 
 
 puts "  #{recs.size} records:"
@@ -130,7 +140,8 @@ recs.each do |rec|
                        end
             img.crop( x_offset, y_offset, 24, 24 ).transparent
         elsif path.index( 'clout-punks/' ) ||
-              path.index( 'unofficialpunks/' )
+              path.index( 'unofficialpunks/' ) ||
+              path.index( 'genius-punks/' )
           img.transparent
         else
             img.transparent( fuzzy: true )
