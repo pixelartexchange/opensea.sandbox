@@ -41,6 +41,7 @@ path,                            name
 095-lady_diana.png
 086-grigori_raspoetin.png,    Grigori Rasputin
 146-jackie_kennedy.png
+134-erik_cowie.png
 
 
 
@@ -56,9 +57,9 @@ path,                            name
 
 039-cleopatra_vii.png,       Cleopatra
 
-046-soekarno.png
+046-soekarno.png,           Sukarno
 
-060-dzjengis_khan.png
+060-dzjengis_khan.png,     Genghis Khan
 071-fidel_castro.png
 
 091-mao_zedong.png
@@ -66,11 +67,25 @@ path,                            name
 
 
 
+111-salahuddin_al_ayyubi.png,   Saladin
+116-bj_habibie.png
 
-== politics / us presidents
+119-khubilai_khan.png,        Kublai Khan
+
+
+143-guan_yu.png
+
+144-tutankhamun.png
+
+
+
+== politics / united states
 
 005-abraham_lincoln.png
 081-benjamin_franklin.png
+
+104-harriet_tubman.png
+129-rosa_parks.png
 
 
 
@@ -87,6 +102,8 @@ path,                            name
 042-stephen_hawking.png
 138-charles_darwin.png
 140-ada_lovelace.png
+136-sigmund_freud.png
+
 
 
 
@@ -98,7 +115,7 @@ path,                            name
 064-william_shakespeare.png
 075-mark_twain.png
 112-ernest_miller_hemingway.png
-
+107-sergej_aleksandrovitsj_jesenin.png,  Sergej Jesenin
 
 
 
@@ -115,13 +132,23 @@ path,                            name
 101-oliver_hardy.png
 102-stan_laurel.png
 139-james_dean.png
+114-robin_williams_(mork).png,   Robin Williams
+127-heath_ledger.png
+
+
 
 
 == cinema / star wars
 
 033-darth_vader.png
 085-princess_leia.png
+109-qui-gon_jinn.png
 149-obi-wan_kenobi.png
+
+== cinema / harry potter
+
+124-severus_snape.png
+
 
 
 == cinema / fictional characters
@@ -130,6 +157,13 @@ path,                            name
 079-don_vito_corleone.png
 093-tony_montana.png
 115-jason_voorhees.png
+099-mr_miyagi.png
+108-travis_bickle.png
+
+117-yondu.png                 ## move to comics - why? why not?
+128-loki.png
+
+
 
 
 
@@ -161,6 +195,11 @@ path,                            name
 089-james_brown.png
 094-jim_morrison.png
 096-marvin_gaye.png
+105-robin_gibb.png
+113-eddie_van_halen.png
+123-cliff_burton.png
+132-chester_bennington.png
+
 
 
 
@@ -185,6 +224,9 @@ path,                            name
 == art / classic
 
 014-leonardo_da_vinci.png
+106-caspar_david_friedrich.png
+
+
 
 == art / modern
 
@@ -195,6 +237,8 @@ path,                            name
 051-salvador_dali.png
 057-frida_kahlo.png
 058-pablo_picasso.png
+141-jackson_pollock.png
+
 
 
 
@@ -207,6 +251,8 @@ path,                            name
 == sports
 
 003-muhammad_ali.png
+120-james_naismith.png
+
 
 
 == sports / football
@@ -223,6 +269,15 @@ path,                            name
 062-ayrton_senna.png
 
 
+
+
+== innovators / inventors
+
+103-nikola_tesla.png
+142-alfred_nobel.png
+
+
+
 == business
 
 038-steve_jobs.png
@@ -233,6 +288,7 @@ path,                            name
 066-karl_lagerfeld.png
 090-coco_chanel.png
 148-alexander_mcqueen.png
+145-virgil_abloh.png
 
 
 
@@ -254,6 +310,8 @@ path,                            name
 
 043-pablo_escobar.png
 087-al_capone.png
+
+
 
 
 

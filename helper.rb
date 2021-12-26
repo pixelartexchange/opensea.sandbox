@@ -339,17 +339,25 @@ class Image
   def transparent( style = :solid, fuzzy: false )
     img = Image.new( width, height )
 
+
     background = self[0,0]
 
     bh,bs,bl =  Color.to_hsl( background )
     bh = (bh % 360)  ## might might negative degree (always make positive)
 
+    height.times do |y|
+        if style == :linear
+          background = self[0,y]
 
-    width.times do |x|
-      height.times do |y|
+          bh,bs,bl =  Color.to_hsl( background )
+          bh = (bh % 360)  ## might might negative degree (always make positive)
+        end
+      width.times do |x|
         pixel = self[x,y]
 
-        if fuzzy
+        if background == 0  ## special case if background is already transparent keep going
+          img[x,y] =  pixel
+        elsif fuzzy
           ## check for more transparents
             ##   not s  is 0.0 to 0.99  (100%)
             ##   and l  is 0.0 to 0.99  (100%)
@@ -379,7 +387,7 @@ class Image
       end
     end
     img
-  end
+  end # method transparent
 end  # class Image
 
 

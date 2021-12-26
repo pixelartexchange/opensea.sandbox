@@ -46,9 +46,11 @@ recs += read_recs( './misc/readymade_stars.csv', collection: 'star-punks1' )
 
 recs += read_recs( './misc/readymade_clout.csv', collection: 'clout-punks' )
 
+recs += read_recs( './misc/readymade_genius-ii.csv',  collection: 'genius-punks' )
+
 recs += read_recs( './misc/readymade_unofficial.csv', collection: 'unofficialpunks' )
 
-recs += read_recs( './misc/readymade_genius-ii.csv',  collection: 'genius-punks' )
+recs += read_recs( './misc/readymade_cinema.csv', collection: 'cinepunkss' )
 
 
 
@@ -91,10 +93,12 @@ recs.each do |rec|
   puts "#{path} =>  #{name}   (#{category})"
 
   ## skip for now - do not regenerate on every run for now
-  next if path.index( 'thecryptogenius/' )
-  next if path.index( 'histopunks/' )
-  next if path.index( 'star-punks1/' )
-
+  # next if path.index( 'thecryptogenius/' )
+  # next if path.index( 'histopunks/' )
+  # next if path.index( 'star-punks1/' )
+  # next if path.index( 'clout-punks/' )
+  # next if path.index( 'genius-punks/' )
+  # next if path.index( 'unofficialpunks/' )
 
 
   img = Image.read( path )
@@ -139,8 +143,10 @@ recs.each do |rec|
                           4
                        end
             img.crop( x_offset, y_offset, 24, 24 ).transparent
+        elsif path.index( '034-bob_marley_punk' )
+          img.transparent( :linear, fuzzy: true )    ## linear greadient / pattern
         elsif path.index( 'clout-punks/' ) ||
-              path.index( 'unofficialpunks/' ) ||
+              # path.index( 'unofficialpunks/' ) ||
               path.index( 'genius-punks/' )
           img.transparent
         else
