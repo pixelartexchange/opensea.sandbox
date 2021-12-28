@@ -108,7 +108,7 @@ paintings = [
 ]
 
 
-## quiz no. 3
+## quiz no. 4
 composite = ImageComposite.new( 3, 3 )
 
 paintings.each do |punk|
@@ -120,3 +120,30 @@ composite.zoom(2).save( "./i/quiz_iiii@2x.png" )
 composite.zoom(4).save( "./i/quiz_iiii@4x.png" )
 composite.zoom(8).save( "./i/quiz_iiii@8x.png" )
 
+
+
+
+enterprise = [
+  Image.read( '../punks.readymade/cinema_I_fictional_characters/sulu.png' ),
+  Image.read( '../punks.readymade/cinema_I_fictional_characters/nyota_uhura.png' ),
+  Image.read( '../punks.readymade/cinema_I_fictional_characters/spock.png' ),
+  Image.read( '../punks.readymade/cinema_I_fictional_characters/kirk.png' ),
+]
+
+## quiz no. 5
+composite = ImageComposite.new( 2, 2 )
+
+enterprise.each do |punk|
+  composite << punk
+end
+
+
+
+composite.save( "./i/quiz_v.png" )
+composite.zoom(2).save( "./i/quiz_v@2x.png" )
+composite.zoom(4).save( "./i/quiz_v@4x.png" )
+composite.zoom(8).save( "./i/quiz_v@8x.png" )
+
+
+
+puts "bye"
