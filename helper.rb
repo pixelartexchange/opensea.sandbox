@@ -46,90 +46,6 @@ end
 
 
 
-BASE = "https://api.opensea.io/api/v1/assets?collection={collection}&order_direction=asc&offset={offset}&limit=1"
-
-
-def download_images( range, collection,
-                        original: false )
-  start = Time.now
-  delay_in_s = 0.3
-
-  range.each do |offset|
-    txt = File.open( "./#{collection}/meta/#{offset}.json", "r:utf-8") { |f| f.read }
-    data = JSON.parse( txt )
-
-    assets = data['assets']
-    if assets.size != 1
-       puts "!! error - expection one asset per file"
-       exit 1
-    end
-
-    asset = assets[0]
-
-    puts "==> #{offset}.json  -  #{asset['name']}"
-
-    image_src =  if original
-                   asset['image_original_url']
-                 else
-                   asset['image_url']
-                 end
-
-    puts "    >#{image_src}<"
-    if image_src.nil?
-       puts "!! ERROR - no image url found (use original: #{original}):"
-       pp asset
-       exit 1
-    end
-
-    ## note: use a different directory to avoid size confusion!!!
-    img_slug =  if original
-                   'i_org'
-                else
-                   'i'
-                end
-
-    ## note: will auto-add format file extension (e.g. .png, .jpg)
-    ##        depending on http content type!!!!!
-    copy_image( image_src, "./#{collection}/#{img_slug}/#{offset}" )
-
-    puts "sleeping #{delay_in_s}s..."
-    sleep( delay_in_s )
-
-    stop = Time.now
-    diff = stop - start
-
-    mins = diff / 60  ## todo - use floor or such?
-    secs = diff % 60
-    puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
-  end
-end
-
-
-def download_meta( range, collection )
-  start = Time.now
-  delay_in_s = 0.3
-
-  range.each do |offset|
-
-    src = BASE.sub( '{collection}', collection ).
-               sub( '{offset}', offset.to_s )
-
-    dest = "./#{collection}/meta/#{offset}.json"
-
-    puts "==> #{offset} - GET #{src}..."
-    copy_json( src, dest )
-
-    puts "sleeping #{delay_in_s}s..."
-    sleep( delay_in_s )
-
-    stop = Time.now
-    diff = stop - start
-
-    mins = diff / 60  ## todo - use floor or such?
-    secs = diff % 60
-    puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
-  end
-end
 
 
 
@@ -221,85 +137,6 @@ def copy_image( src, dest )
   end
 end
 
-
-
-
-#############
-# read meta data into struct
-
-class Meta
-  def initialize( txt )
-    @data = JSON.parse( txt )
-
-    assets = @data['assets']
-    if assets.size != 1
-      puts "!! error - expected one asset per file only - got #{assets.size} - sorry"
-      exit 1
-    end
-
-    @asset = assets[0]
-  end
-
-  def name
-    @name ||= _normalize( @asset['name'] )
-  end
-
-  def description
-    @description ||= _normalize( @asset['description'] )
-  end
-
-  def token_id    ## note: keep id as string as is - why? why not?
-    @token_id ||= @asset['token_id']
-  end
-
-
-
-  def traits
-    @traits ||= begin
-                   traits = {}
-                   @asset[ 'traits' ].each do |t|
-                      trait_type = t['trait_type'].strip
-                      h = {}
-                      # todo/fix:  change to a different model with multiple values!!!
-                      #if traits.has_key?( trait_type )
-                      #  puts "!! error - duplicate trait type >#{trait_type}< not allowed for now, sorry"
-                      #  pp @assets['traits']
-                      #  puts "---"
-                      #  pp @data
-                      #  exit 1
-                      #end
-                      ## add all key/value pairs (except trait_type)
-                      t.each do |k,v|
-                         next if k == 'trait_type'
-                         h[k] = v
-                      end
-                      traits[ trait_type] = h
-                   end
-
-                   traits
-                  end
-    end
-
-
-
-### "private"  convenience / helper methods
-    def _normalize( str )
-       ## normalize string
-       ##   remove leading and trailing spaces
-       ##   collapse two and more spaces into one
-       ##    change unicode space to ascii
-       str = str.gsub( "\u{00a0}", ' ' )
-       str = str.strip.gsub( /[ ]{2,}/, ' ' )
-       str
-    end
-end  # class Meta
-
-
-def read_meta( path )
-  txt = File.open( path, 'r:utf-8') { |f| f.read }
-  meta = Meta.new( txt )
-  meta
-end
 
 
 
@@ -417,5 +254,201 @@ end
 
 end   # class ImageComposite
 end   # module Pixelart
+
+
+
+
+
+###################################
+#  try a new Collection full-service class
+
+
+#############
+# read meta data into struct
+
+class Meta
+  def self.read( path )
+    txt  = File.open( path, 'r:utf-8' ) { |f| f.read }
+    data = JSON.parse( txt )
+    new( data )
+  end
+
+
+  def initialize( data )
+    @data = data
+
+    assets = @data['assets']
+    if assets.size != 1
+      puts "!! error - expected one asset per file only - got #{assets.size} - sorry"
+      exit 1
+    end
+
+    @asset = assets[0]
+  end
+
+  def name
+    @name ||= _normalize( @asset['name'] )
+  end
+
+  def description
+    @description ||= _normalize( @asset['description'] )
+  end
+
+  def image_original_url() @asset['image_original_url']; end
+  def image_url()          @asset['image_url']; end
+
+  def token_id() @asset['token_id']; end    ## note: keep id as string as is - why? why not?
+
+
+  def traits
+    @traits ||= begin
+                   traits = {}
+                   @asset[ 'traits' ].each do |t|
+                      trait_type = t['trait_type'].strip
+                      h = {}
+                      # todo/fix:  change to a different model with multiple values!!!
+                      #if traits.has_key?( trait_type )
+                      #  puts "!! error - duplicate trait type >#{trait_type}< not allowed for now, sorry"
+                      #  pp @assets['traits']
+                      #  puts "---"
+                      #  pp @data
+                      #  exit 1
+                      #end
+                      ## add all key/value pairs (except trait_type)
+                      t.each do |k,v|
+                         next if k == 'trait_type'
+                         h[k] = v
+                      end
+                      traits[ trait_type] = h
+                   end
+
+                   traits
+                  end
+    end
+
+
+
+### "private"  convenience / helper methods
+    def _normalize( str )
+       ## normalize string
+       ##   remove leading and trailing spaces
+       ##   collapse two and more spaces into one
+       ##    change unicode space to ascii
+       str = str.gsub( "\u{00a0}", ' ' )
+       str = str.strip.gsub( /[ ]{2,}/, ' ' )
+       str
+    end
+end  # class Meta
+
+
+
+
+
+class Collection
+
+attr_reader :slug, :count
+
+def initialize( slug, count )   # check: rename count to items or such - why? why not?
+  @slug = slug
+  @count = count
+end
+
+
+def download_meta( range=(0...@count) )
+  self.class.download_meta( range, @slug )
+end
+
+def download_images( range=(0...@count) )
+  self.class.download_images( range, @slug )
+end
+
+def download( range=(0...@count) )
+  download_meta( range )
+  download_images( range )
+end
+
+
+
+################################
+# private (static) helpers
+#
+
+BASE = 'https://api.opensea.io/api/v1/assets?collection={collection}&order_direction=asc&offset={offset}&limit=1'
+
+
+
+def self.download_images( range, collection,
+                            original: false )
+  start = Time.now
+  delay_in_s = 0.3
+
+  range.each do |offset|
+    meta = Meta.read( "./#{collection}/meta/#{offset}.json" )
+
+    puts "==> #{offset}.json  -  #{meta.name}"
+
+    image_src =  if original
+                   meta.image_original_url
+                 else
+                   meta.image_url
+                 end
+
+    puts "    >#{image_src}<"
+    if image_src.nil?
+       puts "!! ERROR - no image url found (use original: #{original}):"
+       pp asset
+       exit 1
+    end
+
+    ## note: use a different directory to avoid size confusion!!!
+    img_slug =  if original
+                   'i_org'
+                else
+                   'i'
+                end
+
+    ## note: will auto-add format file extension (e.g. .png, .jpg)
+    ##        depending on http content type!!!!!
+    copy_image( image_src, "./#{collection}/#{img_slug}/#{offset}" )
+
+    puts "sleeping #{delay_in_s}s..."
+    sleep( delay_in_s )
+
+    stop = Time.now
+    diff = stop - start
+
+    mins = diff / 60  ## todo - use floor or such?
+    secs = diff % 60
+    puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
+  end
+end
+
+
+def self.download_meta( range, collection )
+  start = Time.now
+  delay_in_s = 0.3
+
+  range.each do |offset|
+
+    src = BASE.sub( '{collection}', collection ).
+               sub( '{offset}', offset.to_s )
+
+    dest = "./#{collection}/meta/#{offset}.json"
+
+    puts "==> #{offset} - GET #{src}..."
+    copy_json( src, dest )
+
+    puts "  sleeping #{delay_in_s}s..."
+    sleep( delay_in_s )
+
+    stop = Time.now
+    diff = stop - start
+
+    mins = diff / 60  ## todo - use floor or such?
+    secs = diff % 60
+    puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
+  end
+end
+end # class Collection
 
 
