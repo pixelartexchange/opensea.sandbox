@@ -9,11 +9,10 @@ files = Dir.glob( '../punks.readymade/**/*.png' )
 files = files.sort
 
 puts "  #{files.size} file(s)"
-#=> 495 file(s)
+#=> 509 file(s)
 
 
-
-composite = ImageComposite.new( 25, 20 )   # 25x20 = 500
+composite = ImageComposite.new( 25, 21 )   # 25x21 = 525
 files.each do |file|
   next if file.index( '/readymades.png' )  ## skip composites
   composite << Image.read( file )
