@@ -11,7 +11,12 @@ require_relative '../helper'
 
 c = ImageCollection.new( 'basicboredapeclub', 10000,
                           image_base: 'https://basicboredapeclub.com/nft/{id}.png' )
+
+# range = (8432..9999)
+# c.download_images( range )
+
 c.download_images
+
 
 
 
@@ -29,6 +34,28 @@ puts "bye"
 
 
 __END__
+
+
+try to fix:
+
+==> 8432 - basicboredapeclub...
+[debug] GET /nft/8432.png uri=https://basicboredapeclub.com/nft/8432.png
+Traceback (most recent call last):
+        10: from basicboredapeclub/download.rb:14:in `<main>'
+         9: from opensea.sandbox/helper.rb:168:in `download_images'
+         8: from opensea.sandbox/helper.rb:168:in `each'
+         7: from opensea.sandbox/helper.rb:175:in `block in download_images'
+         6: from opensea.sandbox/helper.rb:106:in `copy_image'
+         5: from ruby/2.7.0/net/http.rb:1483:in `request'
+         4: from ruby/2.7.0/net/http.rb:932:in `start'
+         3: from ruby/2.7.0/net/http.rb:943:in `do_start'
+         2: from ruby/2.7.0/net/http.rb:1009:in `connect'
+         1: from ruby/2.7.0/net/protocol.rb:44:in `ssl_socket_connect'
+ruby/2.7.0/net/protocol.rb:44:in `connect_nonblock': An existing connection was forcibly closed by the remote host. - SSL_connect (Errno::ECONNRESET)
+
+
+
+
 
 try to fix:
 
