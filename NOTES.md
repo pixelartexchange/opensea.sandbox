@@ -13,6 +13,11 @@
 
 ## More Collections?
 
+- <https://opensea.io/collection/pixel-gals>
+
+- <https://opensea.io/collection/donutheads2>
+
+---
 
 - <https://opensea.io/collection/unofficialpunks> - 100 items
 
