@@ -63,15 +63,22 @@ PIXEL_OFFSET = {
 
 
 collection = 'basicboredapeclub'
-range      = (0..9)   # 10000 items
+range      =  (38..9999)   #(0..9999)   # 10000 items
 
 
 range.each do |id|
   slug = "%04d" % id
 
-  puts "==> #{id}  -  #{slug}"
+  print "==> #{id}  - reading / decoding #{slug} ..."
+  start = Time.now
 
   img = Image.read( "./#{collection}/i/#{id}.png" )
+
+  stop = Time.now
+  diff = stop - start
+
+  print " in #{diff} sec(s)\n"
+
 
   if img.width == 2400 && img.height == 2400
     ## do nothing; everything ok

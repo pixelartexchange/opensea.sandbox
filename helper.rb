@@ -11,6 +11,8 @@ require 'fileutils'         ### used ??? remove??
 require 'json'
 
 
+
+$LOAD_PATH.unshift( "../pixelart/pixelart/lib" )
 ## our own gems
 require 'pixelart'
 

@@ -6,10 +6,6 @@
 module Pixelart
 
 class Image
-  def crop( x, y, crop_width, crop_height )
-    self.class.new(  nil, nil,
-                     self.image.crop( x,y, crop_width, crop_height ) )
-  end
 
 
   def sample( offsets )
@@ -32,60 +28,6 @@ class Image
     dest
   end
   alias_method :pixelate, :sample
-
-
-  def transparent( style = :solid, fuzzy: false )
-    img = Image.new( width, height )
-
-
-    background = self[0,0]
-
-    bh,bs,bl =  Color.to_hsl( background )
-    bh = (bh % 360)  ## might might negative degree (always make positive)
-
-    height.times do |y|
-        if style == :linear
-          background = self[0,y]
-
-          bh,bs,bl =  Color.to_hsl( background )
-          bh = (bh % 360)  ## might might negative degree (always make positive)
-        end
-      width.times do |x|
-        pixel = self[x,y]
-
-        if background == 0  ## special case if background is already transparent keep going
-          img[x,y] =  pixel
-        elsif fuzzy
-          ## check for more transparents
-            ##   not s  is 0.0 to 0.99  (100%)
-            ##   and l  is 0.0 to 0.99  (100%)
-          h,s,l =  Color.to_hsl( pixel )
-          h = (h % 360)  ## might might negative degree (always make positive)
-
-          ## try some kind-of fuzzy "heuristic" match on background color
-          if ((h >= bh-5) && (h <= bh+5)) &&
-             ((s >= bs-0.07) && (s <= bs+0.07)) &&
-             ((l >= bl-0.07) && (l <= bl+0.07))
-           img[x,y] = 0  ## Color::TRANSPARENT
-
-           if h != bh || s != bs || l != bl
-              # report fuzzy background color
-              puts "  #{x}/#{y} fuzzy background #{[h,s,l]} ~= #{[bh,bs,bl]}"
-           end
-          else
-            img[x,y] =  pixel
-          end
-        else
-           if pixel == background
-            img[x,y] = 0   ## Color::TRANSPARENT
-           else
-             img[x,y] =  pixel
-           end
-        end
-      end
-    end
-    img
-  end # method transparent
 end  # class Image
 
 
@@ -112,5 +54,51 @@ end
 end   # class ImageComposite
 end   # module Pixelart
 
+
+
+
+###
+#   add common
+#     pixel(ate) offsets (for sampling)
+module Pixelart
+  class Image
+
+PIXEL_OFFSETS = {
+   '512x512' =>  {
+        '24x24' => {
+## 512x512  (24x24)
+##   assume 21px per pixel 21x24 = 504 + 8 = 512
+##
+##  e.g.   24.times {|i| puts "#{(12+i*21+8.0/24.0*i).to_i} => #{i}," }
+  12 => 0,
+  33 => 1,
+  54 => 2,
+  76 => 3,
+  97 => 4,
+  118 => 5,
+  140 => 6,
+  161 => 7,
+  182 => 8,
+  204 => 9,
+  225 => 10,
+  246 => 11,
+  268 => 12,
+  289 => 13,
+  310 => 14,
+  332 => 15,
+  353 => 16,
+  374 => 17,
+  396 => 18,
+  417 => 19,
+  438 => 20,
+  460 => 21,
+  481 => 22,
+  502 => 23,
+     }
+  }
+}
+
+end   # class ImageComposite
+end   # module Pixelart
 
 
