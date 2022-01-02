@@ -65,7 +65,10 @@ buf << "\n\n"
 buf << "</div>"
 
 
-File.open( './misc/tmp/summary.md', 'w:utf-8' ) { |f| f.write( buf ) }
+# File.open( './misc/tmp/summary.md', 'w:utf-8' ) { |f| f.write( buf ) }
+
+## update in-place - why? why not?
+File.open( '../punks.readymade/index.html', 'w:utf-8' ) { |f| f.write( buf ) }
 
 
 puts "bye"

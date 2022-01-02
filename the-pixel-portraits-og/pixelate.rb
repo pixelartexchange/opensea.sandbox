@@ -4,7 +4,7 @@ require_relative '../helper'
 
 
 collection = 'the-pixel-portraits-og'
-range      =  (449..1004)   # (0..1004)   #  1005 items
+range      =  (948..1001)   # (0..1001)   #  1005 items
 
 
 slugs = Hash.new(0)
@@ -13,7 +13,12 @@ range.each do |id|
   ## filter out - family portraits images and composites:
   ##   no. 21 - is 240x240 (skip for now)
   ##   no. 449 is 15000x15000 hi-def composite
-    next if [21, 449].include?( id )
+  ##   no. 653   is "family" portrait in 512x313
+  ##   no. 684   is  512x237
+  ##   no. 919   is  512x452
+  ##   no. 935    is 512x422
+  ##   no. 948    is 512x341
+    next if [21, 449, 653, 684, 919, 935, 948].include?( id )
 
     meta = OpenSea::Meta.read( "./#{collection}/meta/#{id}.json" )
 
@@ -29,7 +34,10 @@ range.each do |id|
 
     img = Image.read( "./#{collection}/i/#{id}.png" )
 
-    if img.width == 512 && img.height == 512
+    ##
+    # ==> 650  - Cool Cat | cool_cat  511x512
+
+    if [img.width == 511 || img.width == 512] && img.height == 512
       ## do nothing; everything ok
     else
       puts "!! ERROR - unknown image dimension #{img.width}x#{img.height}; sorry"

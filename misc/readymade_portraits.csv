@@ -6,6 +6,9 @@ path,                            name
 bodhisattva.png
 hanuman.png
 jesus_christ.png
+pope_francis.png
+
+
 
 
 == philosophy
@@ -18,6 +21,8 @@ friedrich_nietzsche.png
 hippocrates.png
 karl_marx.png
 martin_heidegger.png
+plato.png
+socrates.png
 
 
 
@@ -27,13 +32,21 @@ anonymous.png
 death.png
 kratos.png
 medusa.png
+thor.png
+
+
 
 
 == politics
 
 che_guevara.png
-lula.png,        Lula Da Silva
-mao.png,         Mao Zedong
+lula.png,               Lula Da Silva
+mao.png,                Mao Zedong
+napoleon.png,           Napoleon Bonaparte
+pm_narendra_modi.png,   Narendra Modi
+queen_elizabeth_ii.png
+
+
 
 
 == politics / united states
@@ -45,6 +58,8 @@ george_floyd.png
 jerome_powell.png
 janet.png,            Janet Yellen
 joe_biden.png
+qanon_shaman.png
+
 
 
 
@@ -55,6 +70,11 @@ joe_biden.png
 columbus.png,    Christopher Columbus
 magellan.png,    Ferdinand Magellan
 marco_polo.png
+sir_edmund_hillary.png
+vasco_de_gama.png
+yuri_gagarin.png
+
+
 
 
 
@@ -64,12 +84,20 @@ ada_lovelace.png
 alan_turing.png
 albert_einstein.png
 carl_sagan.png
-fibonacci.png, Leonardo Fibonacci
-
+fibonacci.png,        Leonardo Fibonacci
+newton.png,           Isaac Newton
 
 == cinema / actors
 
 bruce_lee.png
+paul_walker.png
+
+
+== cinema / directors
+
+steven_spielberg.png
+
+
 
 
 == cinema / fictional characters
@@ -92,7 +120,13 @@ loki.png
 mandalorian.png
 megumin.png
 mickey_mouse.png
-
+pennywise.png
+roy_batty.png
+tony_soprano.png
+tyrion.png,  Tyrion Lannister
+vision.png
+yoda.png
+yondu.png
 
 
 
@@ -107,6 +141,8 @@ grogu.png
 
 harry_potter.png
 lord_voldemort.png
+ron_weasley.png
+
 
 
 
@@ -125,7 +161,20 @@ john_lennon.png
 jonny_greenwood.png
 lady_gaga.png
 michael_jackson.png
+paul_mccartney.png
+ringo_starr.png
+roger_taylor.png
+shawn_crahan.png
+taylor_swift.png
 
+
+
+
+
+== music / hip-hop-n-rappers
+
+notorious_big.png
+tupac.png,          Tupac Shakur
 
 
 == art / classic
@@ -139,7 +188,28 @@ beeple.png
 bob_ross.png
 dali.png,                   Salvador Dali
 jean_michel_basquiat.png,   Jean-Michel Basquiat
+van_gogh.png
+warhol.png,                 Andy Warhol
 
+
+
+
+
+== innovators / inventors
+
+nikola_tesla.png
+
+
+== business
+
+steve_jobs.png
+warren_buffett.png
+
+
+
+== business / brand-n-advertising characters
+
+wsbpunk.png,    Wall Street Bets
 
 
 
@@ -155,6 +225,10 @@ jack_dorsey.png
 joseph_lubin.png
 justin_sun.png
 mark_cuban.png
+nick_szabo.png
+satoshi.png,              Satoshi Nakamoto
+sbf.png,                  Sam Bankman-Fried
+tyler_winklevoss.png
 
 
 
@@ -162,12 +236,23 @@ mark_cuban.png
 == sports
 
 muhammad_ali.png
+roger_federer.png
+tiger_woods.png
+
 
 
 == sports / football
 
 cristiano_ronaldo.png
 maradona.png,          Diego Maradona
+pel.png,               Pele
+
+
+== sports / american football
+
+tom_brady.png
+
+
 
 
 
@@ -183,5 +268,7 @@ michael_jordan.png
 
 cantering_clark.png
 doge.png
+unicorn.png
+
 
 

@@ -56,7 +56,9 @@ recs += read_recs( './misc/readymade_scifi.csv', collection: 'scifipunks' )
 
 recs += read_recs( './misc/readymade_athletes.csv', collection: 'athletes-101' )
 
-recs += read_recs( './misc/readymade_portraits.csv', collection: 'the-pixel-portraits-og' )
+# recs += read_recs( './misc/readymade_portraits.csv', collection: 'the-pixel-portraits-og' )
+
+recs += read_recs( './misc/readymade_portraits_ii.csv', collection: 'the-pixel-portraits-og' )
 
 
 puts "  #{recs.size} records:"
@@ -64,7 +66,7 @@ pp recs
 
 
 rootdir = './misc/tmp'
-# rootdir = '../punks.readymade'
+#  rootdir = '../punks.readymade'
 
 
 ###
