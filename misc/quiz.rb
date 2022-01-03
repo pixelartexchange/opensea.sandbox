@@ -4,6 +4,9 @@
 require 'pixelart'
 
 
+
+
+
 pop_rock = [
   Image.read( './thecryptogenius/ii/076-freddie_mercury.png' ),
   Image.read( './thecryptogenius/ii/079-david_bowie.png' ),
@@ -143,6 +146,47 @@ composite.save( "./i/quiz_v.png" )
 composite.zoom(2).save( "./i/quiz_v@2x.png" )
 composite.zoom(4).save( "./i/quiz_v@4x.png" )
 composite.zoom(8).save( "./i/quiz_v@8x.png" )
+
+
+
+
+
+star_wars = [
+  'c3po_(3)',
+  'chewbacca',
+  'count_dooku',
+  'darth_maul',
+
+  'han_solo',
+  'grogu',
+  'darth_sidious',
+  'lando_calrissian',
+
+  'han_solo_hoth',
+  'darth_vader_(2)',
+  'luke_skywalker',
+  'qui-gon_jinn',
+
+  'mace_windu',
+  'obi-wan_kenobi',
+  'princess_leia_(2)',
+  'r2d2',
+]
+
+## quiz no. 6
+composite = ImageComposite.new( 4, 4 )
+
+star_wars.each do |name|
+  punk = Image.read( "../punks.readymade/cinema_I_star_wars/#{name}.png" )
+  composite << punk
+end
+
+
+
+composite.save( "./i/quiz_vi.png" )
+composite.zoom(2).save( "./i/quiz_vi@2x.png" )
+composite.zoom(4).save( "./i/quiz_vi@4x.png" )
+composite.zoom(8).save( "./i/quiz_vi@8x.png" )
 
 
 
