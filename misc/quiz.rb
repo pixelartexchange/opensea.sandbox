@@ -224,6 +224,22 @@ composite.zoom(4).save( "./i/quiz_vii@4x.png" )
 composite.zoom(8).save( "./i/quiz_vii@8x.png" )
 
 
+## try variant with all left-two-right and "flipped" looking from top
+composite = ImageComposite.new( 4, 1, width: 24, height: 24*2 )
+
+beatles.each_with_index do |name,i|
+  img  = Image.new( 24, 24*2, backgrounds[ i ] )
+  punk = Image.read( "../punks.readymade/music_I_pop-n-rock/#{name}.png" )
+  punk = punk.flip
+  img.compose!( punk, 0, 0 )
+  composite << img
+end
+
+composite.save( "./i/quiz_vii_(2).png" )
+composite.zoom(2).save( "./i/quiz_vii_(2)@2x.png" )
+composite.zoom(4).save( "./i/quiz_vii_(2)@4x.png" )
+composite.zoom(8).save( "./i/quiz_vii_(2)@8x.png" )
+
 
 
 puts "bye"
