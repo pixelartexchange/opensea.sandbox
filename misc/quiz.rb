@@ -6,7 +6,6 @@ require 'pixelart'
 
 
 
-
 pop_rock = [
   Image.read( './thecryptogenius/ii/076-freddie_mercury.png' ),
   Image.read( './thecryptogenius/ii/079-david_bowie.png' ),
@@ -187,6 +186,43 @@ composite.save( "./i/quiz_vi.png" )
 composite.zoom(2).save( "./i/quiz_vi@2x.png" )
 composite.zoom(4).save( "./i/quiz_vi@4x.png" )
 composite.zoom(8).save( "./i/quiz_vi@8x.png" )
+
+
+
+
+
+
+beatles = [
+  'john_lennon',
+  'paul_mccartney_(2)',
+  'ringo_starr_(2)',
+  'george_harrison_(2)',
+]
+
+## quiz no. 7
+
+
+composite = ImageComposite.new( 2, 2 )
+
+RED    = '#ff0000'
+GREEN  = '#00ff00'
+YELLOW = '#ffff00'
+BLUE   = '#0000ff'
+
+backgrounds = [YELLOW, RED, BLUE, GREEN]
+beatles.each_with_index do |name,i|
+  punk = Image.new( 24, 24, backgrounds[ i ] )
+  punk.compose!( Image.read( "../punks.readymade/music_I_pop-n-rock/#{name}.png" ))
+  composite << punk
+end
+
+
+
+composite.save( "./i/quiz_vii.png" )
+composite.zoom(2).save( "./i/quiz_vii@2x.png" )
+composite.zoom(4).save( "./i/quiz_vii@4x.png" )
+composite.zoom(8).save( "./i/quiz_vii@8x.png" )
+
 
 
 
