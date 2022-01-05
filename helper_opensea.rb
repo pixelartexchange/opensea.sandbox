@@ -42,29 +42,22 @@ class Meta
 
   def traits
     @traits ||= begin
-                   traits = {}
+                   traits = []
+                   ## keep traits as (simple)
+                   ##   ordered array of pairs for now
+                   ##
+                   ##  in a step two make lookup via hash table
+                   ##   or such easier / "automagic"
+
                    @asset[ 'traits' ].each do |t|
-                      trait_type = t['trait_type'].strip
-                      h = {}
-                      # todo/fix:  change to a different model with multiple values!!!
-                      #if traits.has_key?( trait_type )
-                      #  puts "!! error - duplicate trait type >#{trait_type}< not allowed for now, sorry"
-                      #  pp @assets['traits']
-                      #  puts "---"
-                      #  pp @data
-                      #  exit 1
-                      #end
-                      ## add all key/value pairs (except trait_type)
-                      t.each do |k,v|
-                         next if k == 'trait_type'
-                         h[k] = v
-                      end
-                      traits[ trait_type] = h
+                      trait_type  = t['trait_type'].strip
+                      trait_value = t['value'].strip
+                      traits << [trait_type, trait_value]
                    end
 
                    traits
                   end
-    end
+  end
 
 
 
