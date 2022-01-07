@@ -16,6 +16,14 @@ try getting collection info via url = "https://api.opensea.io/api/v1/collection/
 
 Python wrapper for the OpenSea API <https://github.com/zseta/python-opensea>
 
+python wrapper for opensea api <https://github.com/ankushKun/opensea>
+
+Automated right-clicking! Download whole NFT collections from OpenSea <https://github.com/k0rnh0li0/rightclicker>
+
+- <https://github.com/k0rnh0li0/rightclicker/blob/master/rightclick.py>
+
+
+
 Ruby
 Script to download all the images from an opensea collection using the OpenSea API <https://github.com/makevoid/opensea-images-downloader>
 
