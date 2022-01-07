@@ -22,6 +22,9 @@ Automated right-clicking! Download whole NFT collections from OpenSea <https://g
 
 - <https://github.com/k0rnh0li0/rightclicker/blob/master/rightclick.py>
 
+Automatically download any NFT collection from OpenSea <https://github.com/sj-dan/OpenSea-NFT-Stealer>
+
+- <https://github.com/sj-dan/OpenSea-NFT-Stealer/blob/master/opensea.py>
 
 
 Ruby
@@ -31,6 +34,11 @@ Script to download all the images from an opensea collection using the OpenSea A
 
 Opensea NFT traits / stats analyzer - status: early stage <https://github.com/makevoid/nft_trait_stats>
 
+
+
+JavaScript
+
+- <https://www.npmjs.com/package/opensea-scraper>
 
 
 
