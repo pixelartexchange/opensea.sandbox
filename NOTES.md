@@ -10,6 +10,27 @@
   - step 2 - try remove background - that is - change to transparent)
 
 
+try getting collection info via url = "https://api.opensea.io/api/v1/collection/#{collection_name}"  - why? why not?
+
+## Other OpenSea Scripts / Libraries
+
+Python wrapper for the OpenSea API <https://github.com/zseta/python-opensea>
+
+Ruby
+Script to download all the images from an opensea collection using the OpenSea API <https://github.com/makevoid/opensea-images-downloader>
+
+- <https://github.com/makevoid/opensea-images-downloader/blob/master/downloader.rb>
+
+Opensea NFT traits / stats analyzer - status: early stage <https://github.com/makevoid/nft_trait_stats>
+
+
+
+
+**More**
+
+OpenSea Topic on Github <https://github.com/topics/opensea>
+
+
 
 ## More Collections?
 
