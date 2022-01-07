@@ -1,11 +1,17 @@
+######################
+# Attribute Counts
+#
+# |Name|Total (%)|
+# |--------|----------:|
+# | **0 Attributes** | 150 (100.00) |
+
+
 
 require_relative '../helper'
 
 
-
-collection = 'blockydoge'
-range      =  (0..99)   # 100 items
-
+collection = 'dogepunks-collection'
+range      = (0..149)   # 150 items
 
 
 counter = {}
@@ -14,17 +20,8 @@ range.each do |id|
 
     meta = OpenSea::Meta.read( "./#{collection}/meta/#{id}.json" )
 
-    #####
-    #  Blocky Doge #1  => 1
-    num =  if m=meta.name.match( /^Blocky Doge #(?<num>[0-9]+)$/ )
-      m[:num].to_i( 10 )   ## note: add base 10 (e.g. 015=>15)
-    else
-       puts "!! ERROR - cannot find id number in >#{meta.name}<:"
-       pp meta
-       exit 1
-    end
 
-    puts "==> #{num} - #{meta.name}"
+    puts "==> #{id} - #{meta.name}"
     pp  meta.traits
 
 
@@ -32,6 +29,10 @@ range.each do |id|
                                             by_type: Hash.new(0)
                                           }
     rec[ :count ] +=1
+
+    ## note: only include Accessory traits in count!!!!
+    # rec[ :by_type ][
+    #  meta.traits.select { |t| t[0]=='Accessory' }.size ] += 1
     rec[ :by_type ][ meta.traits.size ] += 1
 
 
@@ -50,12 +51,6 @@ end
 puts
 pp counter
 
-
-puts
-counter_to_csv( counter )
-
-puts
-counter_to_text( counter)
 
 
 puts "bye"

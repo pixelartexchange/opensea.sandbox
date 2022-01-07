@@ -322,3 +322,7 @@ end
 
 end # class Collection
 
+
+
+require_relative 'helper_attributes'
+
