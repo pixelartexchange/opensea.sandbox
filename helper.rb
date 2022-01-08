@@ -10,6 +10,9 @@ require 'fileutils'         ### used ??? remove??
 
 require 'json'
 
+require 'optparse'
+
+
 
 
 $LOAD_PATH.unshift( "../pixelart/pixelart/lib" )
@@ -90,7 +93,8 @@ def copy_json( src, dest )
 end
 
 
-def copy_image( src, dest )
+def copy_image( src, dest,
+                 dump_headers: false )
   uri = URI.parse( src )
 
   http = Net::HTTP.new( uri.host, uri.port )
@@ -113,6 +117,13 @@ def copy_image( src, dest )
     content_type   = response.content_type
     content_length = response.content_length
     puts "  content_type: #{content_type}, content_length: #{content_length}"
+
+    if dump_headers   ## for debugging dump headers
+      headers = response.each_header.to_h
+      puts "htttp respone headers:"
+      pp headers
+    end
+
 
     format = if content_type =~ %r{image/jpeg}i
                 'jpg'
@@ -152,6 +163,81 @@ require_relative 'helper_opensea'
 ###################################
 #  try a new Collection full-service class
 
+
+
+
+class TokenCollection
+
+  attr_reader :slug, :count
+
+  def initialize( slug, count,
+                  token_base: )   # check: rename count to items or such - why? why not?
+    @slug = slug
+    @count = count
+    @token_base = token_base
+  end
+
+  def download_meta( range=(0...@count) )
+    start = Time.now
+    delay_in_s = 0.3
+
+    range.each do |offset|
+      token_src = @token_base.sub( '{id}', offset.to_s )
+
+      puts "==> #{offset} - #{@slug}..."
+
+      copy_json( token_src, "./#{@slug}/token-meta/#{offset}.json" )
+
+      stop = Time.now
+      diff = stop - start
+
+      mins = diff / 60  ## todo - use floor or such?
+      secs = diff % 60
+      puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
+
+      puts "sleeping #{delay_in_s}s..."
+      sleep( delay_in_s )
+    end
+  end
+
+  def download_images( range=(0...@count) )
+    start = Time.now
+    delay_in_s = 0.3
+
+    range.each do |offset|
+      txt = File.open( "./#{@slug}/token-meta/#{offset}.json", 'r:utf-8') { |f| f.read }
+      data = JSON.parse( txt )
+
+      meta_name  = data['name']
+      meta_image = data['image']
+
+      puts "==> #{offset} - #{@slug}..."
+      puts "   name: #{meta_name}"
+      puts "   image: #{meta_image}"
+
+      ## note: will auto-add format file extension (e.g. .png, .jpg)
+      ##        depending on http content type!!!!!
+      start_copy = Time.now
+      copy_image( meta_image, "./#{@slug}/token-i/#{offset}" )
+
+      stop = Time.now
+
+      diff = stop -start_copy
+      puts "    download image in #{diff} sec(s)"
+
+      diff = stop - start
+      mins = diff / 60  ## todo - use floor or such?
+      secs = diff % 60
+      puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
+
+      puts "sleeping #{delay_in_s}s..."
+      sleep( delay_in_s )
+    end
+  end
+end # class TokenCollection
+
+
+
 class ImageCollection
 
   attr_reader :slug, :count
@@ -174,10 +260,7 @@ class ImageCollection
 
       ## note: will auto-add format file extension (e.g. .png, .jpg)
       ##        depending on http content type!!!!!
-      copy_image( image_src, "./#{@slug}/i/#{offset}" )
-
-      puts "sleeping #{delay_in_s}s..."
-      sleep( delay_in_s )
+      copy_image( image_src, "./#{@slug}/image-i/#{offset}" )
 
       stop = Time.now
       diff = stop - start
@@ -185,6 +268,9 @@ class ImageCollection
       mins = diff / 60  ## todo - use floor or such?
       secs = diff % 60
       puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
+
+      puts "sleeping #{delay_in_s}s..."
+      sleep( delay_in_s )
     end
   end
 end # class ImageCollection
@@ -196,9 +282,14 @@ class Collection
 
 attr_reader :slug, :count
 
-def initialize( slug, count )   # check: rename count to items or such - why? why not?
+def initialize( slug, count,
+                meta_slugify: nil,
+                image_pixelate: nil )   # check: rename count to items or such - why? why not?
   @slug = slug
   @count = count
+
+  @meta_slugify   = meta_slugify
+  @image_pixelate = image_pixelate
 end
 
 
@@ -215,6 +306,25 @@ def download( range=(0...@count) )
   download_images( range )
 end
 
+
+def pixelate( range=(0...@count) )
+  range.each do |id|
+
+    meta = OpenSea::Meta.read( "./#{@slug}/meta/#{id}.json" )
+
+    puts meta.name
+
+    meta_slug = @meta_slugify.call( meta, id )
+
+    img = Image.read( "./#{@slug}/i/#{id}.png" )
+
+    pix = @image_pixelate.call( img )
+
+    path = "./#{@slug}/ii/#{meta_slug}.png"
+    puts "   saving to >#{path}<..."
+    pix.save( path )
+  end
+end
 
 
 ################################
@@ -255,15 +365,15 @@ def self.download_images( range, collection,
     ##        depending on http content type!!!!!
     copy_image( image_src, "./#{collection}/#{img_slug}/#{offset}" )
 
-    puts "sleeping #{delay_in_s}s..."
-    sleep( delay_in_s )
-
     stop = Time.now
     diff = stop - start
 
     mins = diff / 60  ## todo - use floor or such?
     secs = diff % 60
     puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
+
+    puts "sleeping #{delay_in_s}s..."
+    sleep( delay_in_s )
   end
 end
 
@@ -307,15 +417,15 @@ def self.download_meta( range, collection, mode: nil )
     end
 
 
-    puts "  sleeping #{delay_in_s}s..."
-    sleep( delay_in_s )
-
     stop = Time.now
     diff = stop - start
 
     mins = diff / 60  ## todo - use floor or such?
     secs = diff % 60
     puts "up #{mins} mins #{secs} secs (total #{diff} secs)"
+
+    puts "  sleeping #{delay_in_s}s..."
+    sleep( delay_in_s )
   end
 end
 
@@ -325,4 +435,6 @@ end # class Collection
 
 
 require_relative 'helper_attributes'
+require_relative 'helper_tool'
+
 
