@@ -66,6 +66,10 @@ class Tool
       end
     elsif ['p', 'px', 'pix', 'pixel', 'pixelate'].include?( command )
       pixelate
+    elsif ['m', 'meta'].include?( command )
+      download_meta
+    elsif ['i', 'img', 'image', 'images'].include?( command )
+      download_images
     else
       puts "!! ERROR - unknown command >#{command}<, sorry"
     end
@@ -76,16 +80,16 @@ class Tool
 
   def self.download_meta
       puts "==> download meta"
-      # @collection.download_meta;
+      @collection.download_meta;
   end
 
   def self.download_images
      puts "==> download images"
-     # @collection.downlad_images
+     @collection.downlad_images
   end
 
   def self.pixelate
     puts "==> pixelate"
-    # @collection.pixelate
+    @collection.pixelate
   end
 end # class Tool

@@ -308,6 +308,13 @@ end
 
 
 def pixelate( range=(0...@count) )
+
+  meta_slugs = Hash.new( 0 )   ## deduplicate (auto-add counter if duplicate)
+
+  ### todo/fix: must read slugs starting at 0
+  ###               to work for deduplicate!!!!!!
+
+
   range.each do |id|
 
     meta = OpenSea::Meta.read( "./#{@slug}/meta/#{id}.json" )
@@ -315,6 +322,10 @@ def pixelate( range=(0...@count) )
     puts meta.name
 
     meta_slug = @meta_slugify.call( meta, id )
+    count = meta_slugs[ meta_slug ] += 1
+
+    meta_slug = "#{meta_slug}_(#{count})"  if count > 1
+
 
     img = Image.read( "./#{@slug}/i/#{id}.png" )
 
@@ -325,6 +336,7 @@ def pixelate( range=(0...@count) )
     pix.save( path )
   end
 end
+
 
 
 ################################
