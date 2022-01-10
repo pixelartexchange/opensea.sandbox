@@ -16,7 +16,7 @@ c = TokenCollection.new( 'wunks', 6000,
 # range = (5255..5999)
 # c.download_meta( range )
 
-range = (5255..5999)
+range = (5392..5999)
 c.download_images( range )
 
 
