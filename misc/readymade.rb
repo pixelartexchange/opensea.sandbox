@@ -60,13 +60,15 @@ recs += read_recs( './misc/readymade_athletes.csv', collection: 'athletes-101' )
 
 recs += read_recs( './misc/readymade_portraits_ii.csv', collection: 'the-pixel-portraits-og' )
 
+recs += read_recs( './misc/readymade_wunks.csv', collection: 'wunks' )
+
 
 puts "  #{recs.size} records:"
 pp recs
 
 
 rootdir = './misc/tmp'
-#  rootdir = '../punks.readymade'
+# rootdir = '../punks.readymade'
 
 
 ###
@@ -109,6 +111,7 @@ recs.each do |rec|
   next if path.index( 'cinepunkss/' )
   next if path.index( 'scifipunks/' )
   next if path.index( 'athletes-101/' )
+  next if path.index( 'the-pixel-portraits-og' )
 
 
   img = Image.read( path )
@@ -156,6 +159,7 @@ recs.each do |rec|
         elsif path.index( '034-bob_marley_punk' )
           img.transparent( :linear, fuzzy: true )    ## linear greadient / pattern
         elsif path.index( 'clout-punks/' ) ||
+              path.index( 'wunks/' ) ||
               # path.index( 'the-pixel-portraits-og/' ) ||
               # path.index( 'unofficialpunks/' ) ||
               # path.index( 'scifipunks/' ) ||
