@@ -85,7 +85,7 @@ class Tool
 
   def self.download_images
      puts "==> download images"
-     @collection.downlad_images
+     @collection.download_images
   end
 
   def self.pixelate
