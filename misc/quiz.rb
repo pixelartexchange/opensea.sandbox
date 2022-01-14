@@ -192,6 +192,36 @@ composite.zoom(8).save( "./i/quiz_vi@8x.png" )
 
 
 
+
+def gen_palette( hex )
+  ## from black to white (with upper/darker and lower/lighter cut-offs)
+  color = Color.parse( hex )
+  h,s,l = Color.to_hsl( color )
+
+  pp h
+  pp s
+  pp l
+
+  darker = 0.3    ## cut-off colors starting from black
+  lighter = 0.05   ## cut-off colors starting from white
+
+  ldiff = (1.0 - darker - lighter)
+
+  puts "  ldiff: #{ldiff}"
+
+  colors = []
+  256.times do |i|
+     lnew = darker+(ldiff*i / 256.0)
+     puts "  #{i} - #{lnew}"
+     colors << Color.from_hsl( h, s, lnew)
+  end
+
+  colors
+end
+
+
+
+
 beatles = [
   'john_lennon',
   'paul_mccartney_(2)',
@@ -224,14 +254,17 @@ composite.zoom(4).save( "./i/quiz_vii@4x.png" )
 composite.zoom(8).save( "./i/quiz_vii@8x.png" )
 
 
-## try variant with all left-two-right and "flipped" looking from top
-composite = ImageComposite.new( 4, 1, width: 24, height: 24*2 )
+
+## try with "monochrome colors"
+composite = ImageComposite.new( 2, 2 )
 
 beatles.each_with_index do |name,i|
-  img  = Image.new( 24, 24*2, backgrounds[ i ] )
   punk = Image.read( "../punks.readymade/music_I_pop-n-rock/#{name}.png" )
-  punk = punk.flip
-  img.compose!( punk, 0, 0 )
+  punk = punk.change_palette8bit( gen_palette( backgrounds[ i ])  )
+
+  img = Image.new( 24, 24, backgrounds[ i ] )
+  img.compose!( punk )
+
   composite << img
 end
 
@@ -239,6 +272,27 @@ composite.save( "./i/quiz_vii_(2).png" )
 composite.zoom(2).save( "./i/quiz_vii_(2)@2x.png" )
 composite.zoom(4).save( "./i/quiz_vii_(2)@4x.png" )
 composite.zoom(8).save( "./i/quiz_vii_(2)@8x.png" )
+
+
+
+
+## try variant with all left-two-right and "flipped" looking from top
+composite = ImageComposite.new( 4, 1, width: 24, height: 24*2 )
+
+beatles.each_with_index do |name,i|
+  punk = Image.read( "../punks.readymade/music_I_pop-n-rock/#{name}.png" )
+  punk = punk.flip
+  punk = punk.change_palette8bit( gen_palette( backgrounds[ i ])  )
+
+  img  = Image.new( 24, 24*2, backgrounds[ i ] )
+  img.compose!( punk, 0, 0 )
+  composite << img
+end
+
+composite.save( "./i/quiz_vii_(3).png" )
+composite.zoom(2).save( "./i/quiz_vii_(3)@2x.png" )
+composite.zoom(4).save( "./i/quiz_vii_(3)@4x.png" )
+composite.zoom(8).save( "./i/quiz_vii_(3)@8x.png" )
 
 
 
