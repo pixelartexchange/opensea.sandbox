@@ -23,15 +23,12 @@ meta_slugify: ->(meta, index) {
 
 image_pixelate: ->(img) {
   if img.width == 512 && img.height == 512
-    ## do nothing; everything ok
+    img.pixelate( Image::PIXEL_OFFSETS[ '512x512']['24x24'] )
   else
     puts "!! ERROR - unknown image dimension #{img.width}x#{img.height}; sorry"
     exit 1
   end
-
-  img.pixelate( Image::PIXEL_OFFSETS[ '512x512']['24x24'] )
 }
 )
-
 
 

@@ -1,8 +1,37 @@
+require 'pp'
+require 'time'
+require 'date'
+
+require 'uri'
+require 'net/http'
+require 'net/https'
+require 'cgi'
+require 'fileutils'
+
+require 'json'
+
+require 'optparse'
+
+
+
+$LOAD_PATH.unshift( "../pixelart/pixelart/lib" )
+## our own gems
+require 'pixelart'
+
+
+
+
+require_relative 'helper'
+
+
 
 
 class Tool
 
   def self.collection=(value)
+    puts "  setting collection to:"
+    pp value
+
     @collection = value
   end
 
@@ -20,7 +49,7 @@ class Tool
       end
 
       opts.on("--limit NUM", Integer,
-              "Limit collection (default: ∞") do |num|
+              "Limit collection (default: ∞)") do |num|
           options[ :limit]  = num
       end
 
@@ -43,14 +72,28 @@ class Tool
     puts "args:"
     pp args
 
-    if args.size == 0
-      puts "!! ERROR - no command found - use dl/download ..."
+    if args.size < 2
+      puts "!! ERROR - no command found - use <collection> <command>..."
       puts ""
       exit
     end
 
-    command    = args[0]
-    subcommand = args[1]
+    name       = args[0]   ## todo/check - use collection_name/slug or such?
+    command    = args[1]
+    subcommand = args[2]
+
+
+    path = "./#{name}/config.rb"
+    puts "==> reading collection config >#{path}<..."
+
+    ## note: assume for now global const COLLECTION gets set/defined!!!
+    ##   use/change to a script/dsl loader/eval later!!!
+    load( path )
+
+    ## pp COLLECTION
+
+    ## configure collection  (note: requires self)
+    self.collection = COLLECTION
 
 
     if ['d','dl','down', 'download'].include?( command )
@@ -65,11 +108,13 @@ class Tool
         download_images
       end
     elsif ['p', 'px', 'pix', 'pixel', 'pixelate'].include?( command )
-      pixelate
+      pixelate( offset: options[ :offset] )
     elsif ['m', 'meta'].include?( command )
       download_meta
     elsif ['i', 'img', 'image', 'images'].include?( command )
       download_images
+    elsif ['t', 'test'].include?( command )
+       puts "  testing, testing, testing"
     else
       puts "!! ERROR - unknown command >#{command}<, sorry"
     end
@@ -88,8 +133,25 @@ class Tool
      @collection.download_images
   end
 
-  def self.pixelate
+  def self.pixelate( offset: )
     puts "==> pixelate"
-    @collection.pixelate
+
+    ## note: use three dots (...) to exclude e.g. count 100 => 0 to 99)
+    range = if offset
+               (offset...@collection.count)
+            else
+               (0...@collection.count)
+            end
+
+    @collection.pixelate( range )
   end
 end # class Tool
+
+
+
+
+###########
+# start up tool if run via script (e.g. ruby artbase.rb)
+
+Tool.main   if __FILE__ == $0
+

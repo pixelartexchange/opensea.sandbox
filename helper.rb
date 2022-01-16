@@ -1,23 +1,3 @@
-require 'pp'
-require 'time'
-require 'date'
-
-require 'uri'
-require 'net/http'
-require 'net/https'
-require 'cgi'
-require 'fileutils'         ### used ??? remove??
-
-require 'json'
-
-require 'optparse'
-
-
-
-
-$LOAD_PATH.unshift( "../pixelart/pixelart/lib" )
-## our own gems
-require 'pixelart'
 
 
 
@@ -447,6 +427,5 @@ end # class Collection
 
 
 require_relative 'helper_attributes'
-require_relative 'helper_tool'
 
 
