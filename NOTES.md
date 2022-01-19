@@ -101,6 +101,14 @@ https://opensea.io/CryptoSkulls/cryptoskulls - ~10 000 items
 
 
 
+----------------------------
+
+https://opensea.io/collection/joseonnft  - 13999 items
+
+https://opensea.io/collection/rappunks - 90 items
+
+
+https://opensea.io/collection/bit-doggos  - 200 items
 
 
 

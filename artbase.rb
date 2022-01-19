@@ -112,7 +112,7 @@ class Tool
     elsif ['m', 'meta'].include?( command )
       download_meta
     elsif ['i', 'img', 'image', 'images'].include?( command )
-      download_images
+      download_images( offset: options[ :offset] )
     elsif ['t', 'test'].include?( command )
        puts "  testing, testing, testing"
     else
@@ -128,9 +128,17 @@ class Tool
       @collection.download_meta;
   end
 
-  def self.download_images
+  def self.download_images( offset: )
      puts "==> download images"
-     @collection.download_images
+
+    ## note: use three dots (...) to exclude e.g. count 100 => 0 to 99)
+    range = if offset
+               (offset...@collection.count)
+            else
+               (0...@collection.count)
+            end
+
+     @collection.download_images( range )
   end
 
   def self.pixelate( offset: )

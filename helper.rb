@@ -25,6 +25,18 @@ def convert_images( collection, from: 'jpg',
 
       puts "   [#{i+1}/#{files.size}] - #{cmd}"
       system( cmd )
+
+      if from == 'gif'
+        ## assume multi-images for gif
+        ##   save  image-0.png  to  image.png
+        path0 = "#{dirname}/#{basename}-0.#{to}"
+        path  = "#{dirname}/#{basename}.#{to}"
+
+        puts "   saving #{path0} to #{path}..."
+
+        blob = File.open( path0, 'rb' ) { |f| f.read }
+        File.open( path, 'wb' ) { |f| f.write( blob ) }
+      end
     end
 end
 

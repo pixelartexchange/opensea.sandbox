@@ -105,7 +105,10 @@ def self.call( src )   ## get response as (parsed) json (hash table)
 
   puts "[debug] GET #{uri.request_uri} uri=#{uri}"
 
-  headers = { 'User-Agent' => "ruby v#{RUBY_VERSION}" }
+  headers = {
+    'User-Agent' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36",
+    #'User-Agent' => "ruby v#{RUBY_VERSION}",
+   }
 
 
   request = Net::HTTP::Get.new( uri.request_uri, headers )
