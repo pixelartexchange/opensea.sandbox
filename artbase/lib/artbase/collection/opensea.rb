@@ -4,14 +4,17 @@ class Collection    ## todo/check - change to OpenseaCollection or such - why? w
 
 attr_reader :slug, :count
 
-def initialize( slug, count,
+def initialize( slug, count,   # check: rename count to items or such - why? why not?
                 meta_slugify: nil,
-                image_pixelate: nil )   # check: rename count to items or such - why? why not?
+                image_pixelate: nil,
+                exclude: [] )
   @slug = slug
   @count = count
 
   @meta_slugify   = meta_slugify
   @image_pixelate = image_pixelate
+
+  @exclude = exclude
 end
 
 
@@ -38,6 +41,10 @@ def pixelate( range=(0...@count) )
 
 
   range.each do |id|
+    ####
+    # filter out/skip
+    next if @exclude.include?( id )    ## todo/check: report skipping of item - why? why not?
+
 
     meta = OpenSea::Meta.read( "./#{@slug}/meta/#{id}.json" )
 
