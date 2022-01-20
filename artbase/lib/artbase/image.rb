@@ -6,8 +6,15 @@
 module Pixelart
 
 class Image
-  def sample( offsets )
+  def sample( *args, **kwargs )
     ## note: for now always assume square image (e.g. 24x24, 32x32 and such)
+
+    offsets = if kwargs[:from] && kwargs[:to]
+                PIXEL_OFFSETS[ kwargs[:to] ][ kwargs[ :from ]]
+              else
+                args[0]   ## assume "custom" hash of offsets
+              end
+
     width = height = offsets.size
 
     puts "     #{self.width}x#{self.height} => #{width}x#{height}"

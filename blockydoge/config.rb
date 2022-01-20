@@ -1,15 +1,9 @@
 
-require_relative '../helper'
+
+COLLECTION = Collection.new( 'blockydoge', 100,
 
 
-
-collection = 'blockydoge'
-range      =  (0..99)   # 100 items
-
-
-range.each do |id|
-
-    meta = OpenSea::Meta.read( "./#{collection}/meta/#{id}.json" )
+meta_slugify: ->(meta, index) {
 
     puts meta.name
 
@@ -25,22 +19,17 @@ range.each do |id|
 
      slug = "%03d" % num
 
-     puts "==> #{id}  - #{meta.name} => #{num} | #{slug}"
+     puts "==> #{index}  - #{meta.name} => #{num} | #{slug}"
 
-    img = Image.read( "./#{collection}/i/#{id}.png" )
+     slug
+},
 
+image_pixelate: ->(img) {
     if img.width == 512 && img.height == 512
-      ## do nothing; everything ok
+      img.pixelate( from: '512x512', to: '60x60' )
     else
       puts "!! ERROR - unknown image dimension #{img.width}x#{img.height}; sorry"
       exit 1
     end
-
-    pix = img.pixelate( Image::PIXEL_OFFSETS[ '512x512']['60x60'] )
-    pix.save( "./#{collection}/ii/#{slug}.png")
-end
-
-
-puts "bye"
-
-
+}
+)
