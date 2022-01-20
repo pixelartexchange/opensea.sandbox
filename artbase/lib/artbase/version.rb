@@ -1,6 +1,6 @@
 
 
-class Artbase
+module Artbase
 
   MAJOR = 0
   MINOR = 0
