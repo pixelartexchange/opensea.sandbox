@@ -7,12 +7,15 @@ attr_reader :slug, :count
 def initialize( slug, count,   # check: rename count to items or such - why? why not?
                 meta_slugify: nil,
                 image_pixelate: nil,
+                patch: nil,
                 exclude: [] )
   @slug = slug
   @count = count
 
   @meta_slugify   = meta_slugify
   @image_pixelate = image_pixelate
+
+  @patch  = patch
 
   @exclude = exclude
 end
@@ -32,43 +35,61 @@ def download( range=(0...@count) )
 end
 
 
+def _meta_slugify_match( regex, meta, index )
+  if m=regex.match( meta.name )
+    captures = m.named_captures   ## get named captures in match data as hash (keys as strings)
+    # e.g.
+    #=> {"num"=>"3"}
+    #=> {"num"=>"498", "name"=>"Doge"}
+    pp captures
+
+    num  = captures['num']  ? captures['num'].to_i( 10 ) : nil   ## note: add base 10 (e.g. 015=>15)
+    name = captures['name'] ? captures['name'].strip     : nil
+
+    slug = ''
+    if num
+      slug << "%06d" % num    ## todo/check: always fill/zero-pad with six 000000's - why? why not?
+    end
+
+    if name
+      slug << "-"   if num   ## add separator
+      slug << slugify( name )
+    end
+    slug
+  else
+     nil  ## note: return nil if no match / slug
+  end
+end
+
+def _do_meta_slugify( meta_slugify, meta, index )
+  if meta_slugify.is_a?( Regexp )
+    _meta_slugify_match( meta_slugify, meta, index )
+  elsif meta_slugify.is_a?( Proc )
+    meta_slugify.call( meta, index )
+  else
+    raise ArgumentError, "meta_slugify - unsupported type: #{meta_slugify.class.name}"
+  end
+end
+
 
 def _meta_slugify( meta, index )
   slug = nil
 
-  #########################
-  ## case 1 - regexp
-  if @meta_slugify.is_a?( Regexp )
-    if m=meta.name.match( @meta_slugify )
-       captures = m.named_captures   ## get named captures in match data as hash (keys as strings)
-       # e.g.
-       #=> {"num"=>"3"}
-       #=> {"num"=>"498", "name"=>"Doge"}
-       pp captures
+  if @meta_slugify.is_a?( Array )
+      @meta_slugify.each do |meta_slugify|
+         slug = _do_meta_slugify( meta_slugify, meta, index )
+         return slug   if slug     ## note: short-circuit on first match
+                                   ##   use break instead of return - why? why not?
+      end
+   else  ## assume object e.g. Regexp, Proc, etc.
+     slug = _do_meta_slugify( @meta_slugify, meta, index )
+   end
 
-       num  = captures['num']  ? captures['num'].to_i( 10 ) : nil   ## note: add base 10 (e.g. 015=>15)
-       name = captures['name'] ? captures['name'].strip     : nil
-
-       slug = ''
-       if num
-         slug << "%06d" % num    ## todo/check: always fill/zero-pad with six 000000's - why? why not?
-       end
-
-       if name
-         slug << "-"   if num   ## add separator
-         slug << slugify( name )
-       end
-    else
+   ## do nothing
+   if slug.nil?
       puts "!! ERROR - cannot find id in >#{meta.name}<:"
       pp meta
       exit 1
-    end
-   ##########################
-   ## case 2 - proc   - todo/fix: check for return type and support MatchData - why? why not??
-   elsif @meta_slugify.is_a?( Proc )
-     slug = @meta_slugify.call( meta, index )
-   else
-     raise ArgumentError, "meta_slugify - unsupported type: #{@meta_slugify.class.name}"
    end
 
    slug
@@ -91,6 +112,24 @@ def each_meta( range=(0...@count),
     blk.call( meta, id )
   end
 end
+
+
+def _normalize_trait_type( trait_type )
+  if @patch && @patch[:trait_types]
+    @patch[:trait_types][ trait_type ] || trait_type
+  else
+     trait_type
+  end
+end
+
+def _normalize_trait_value( trait_value )
+  if @patch && @patch[:trait_values]
+    @patch[:trait_values][ trait_value ] || trait_value
+  else
+    trait_value
+  end
+end
+
 
 
 def export_attributes
@@ -133,6 +172,9 @@ def export_attributes
 
     ## note: use an array (to allow multiple values for attributes)
     traits.each do |trait_type, trait_value|
+       trait_type  = _normalize_trait_type( trait_type )
+       trait_value = _normalize_trait_value( trait_value )
+
        values = rec[ trait_type ]
        values << trait_value
     end
@@ -199,6 +241,10 @@ def calc_attribute_counters  ## todo/check: use a different name _counts/_stats 
     attributes_by_count[ :by_count ][ traits.size ] += 1
 
     traits.each do |trait_type, trait_value|
+        trait_type  = _normalize_trait_type( trait_type )
+        trait_value = _normalize_trait_value( trait_value )
+
+
         rec = counter[ trait_type ] ||= { count: 0,
                                           by_type: Hash.new(0)
                                         }
