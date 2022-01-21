@@ -91,6 +91,8 @@ class Tool
       download_images( offset: options[ :offset] )
     elsif ['a', 'attr', 'attributes'].include?( command )
       dump_attributes
+    elsif ['x', 'exp', 'export'].include?( command )
+      export_attributes
     elsif ['t', 'test'].include?( command )
        puts "  testing, testing, testing"
     else
@@ -104,6 +106,11 @@ class Tool
   def self.dump_attributes
     puts "==> dump attributes"
     @collection.dump_attributes
+  end
+
+  def self.export_attributes
+    puts "==> export attributes"
+    @collection.export_attributes
   end
 
 

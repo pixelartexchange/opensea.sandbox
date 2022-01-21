@@ -1,6 +1,7 @@
 #####
 # exclude all cache (image, meta) directories
 
+# check if /tmp works for all tmp directories (in subdirs too) ????
 /tmp
 /misc/tmp
 

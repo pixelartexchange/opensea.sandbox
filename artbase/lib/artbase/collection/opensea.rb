@@ -34,7 +34,6 @@ end
 
 
 def _meta_slugify( meta, index )
-
   slug = nil
 
   #########################
@@ -76,36 +75,128 @@ def _meta_slugify( meta, index )
 end
 
 
-def dump_attributes
-  counter = {}
 
-  range=(0...@count)
-  range.each do |id|
-
+def each_meta( range=(0...@count),
+               exclude: true,      &blk )
+  range.each do |id|    ## todo/fix: change id to index
     meta = OpenSea::Meta.read( "./#{@slug}/meta/#{id}.json" )
 
     ####
     # filter out/skip
-    if @exclude.include?( meta.name )
+    if exclude && @exclude.include?( meta.name )
       puts "  skipping / exclude #{id} >#{meta.name}<..."
       next
     end
 
+    blk.call( meta, id )
+  end
+end
+
+
+def export_attributes
+  ## step 1: get counters
+  stats = calc_attribute_counters
+
+  total    = stats[:total]
+  counter  = stats[:traits]
+
+  puts
+  puts "attribute usage / counts:"
+  pp total
+  puts
+
+  puts "#{counter.size} attribute(s):"
+  counter.each do |trait_name, trait_rec|
+     puts "  #{trait_name}  #{trait_rec[:count]}  (#{trait_rec[:by_type].size} uniques)"
+  end
+
+  recs = []
+
+
+  ## step 2: get tabular data
+  each_meta do |meta, id|   ## todo/fix: change id to index
 
     traits = meta.traits
     # print "#{traits.size} - "
     # pp  traits
 
+    print "#{id}.."   if id % 100 == 0  ## print progress report
+
+    ## setup empty hash table (with all attributes)
+    rec = {
+       'Slug'   => _meta_slugify( meta, id ),
+       'Name' => meta.name,
+    }
+    ## add all attributes
+    counter.keys.reduce( rec ) { |h,value| h[value] = []; h }
+    ## pp rec
+
+    ## note: use an array (to allow multiple values for attributes)
+    traits.each do |trait_type, trait_value|
+       values = rec[ trait_type ]
+       values << trait_value
+    end
+    recs << rec
+  end
+  print "\n"
+
+  ## pp recs
+
+  ## flatten recs
+  data = []
+  recs.each do |rec|
+     row = rec.values.map do |value|
+                  if value.is_a?( Array )
+                     value.join( ' / ' )
+                  else
+                     value
+                  end
+             end
+     data << row
+  end
+
+
+  ## sort by slug
+  data = data.sort {|l,r| l[0] <=> r[0] }
+  pp data
+
+  ### save dataset
+  ##  note: change first colum Slug to ID - only used for "internal" sort etc.
+  headers = ['ID', 'Name'] + counter.keys    ## add header row
+
+  path = "./#{@slug}/tmp/#{@slug}.csv"
+  dirname = File.dirname( path )
+  FileUtils.mkdir_p( dirname )  unless Dir.exist?( dirname )
+
+  File.open( path, 'w:utf-8' ) do |f|
+    f.write(  headers.join( ', ' ))
+    f.write( "\n" )
+    ## note: replace ID with our own internal running (zero-based) counter
+    data.each_with_index do |row,i|
+      f.write( ([i]+row[1..-1]).join( ', '))
+      f.write( "\n" )
+    end
+  end
+end
+
+
+def calc_attribute_counters  ## todo/check: use a different name _counts/_stats etc - why? why not?
+
+  attributes_by_count = { count: 0,
+                          by_count: Hash.new(0)
+                        }
+  counter = {}
+
+
+  each_meta do |meta, id|   ## todo/fix: change id to index
+    traits = meta.traits
+    # print "#{traits.size} - "
+    # pp  traits
 
     print "#{id}.."   if id % 100 == 0  ## print progress report
 
-
-    rec = counter[ 'Attribute Count'] ||= { count: 0,
-                                            by_type: Hash.new(0)
-                                          }
-    rec[ :count ] +=1
-    rec[ :by_type ][ traits.size ] += 1
-
+    attributes_by_count[ :count ] +=1
+    attributes_by_count[ :by_count ][ traits.size ] += 1
 
     traits.each do |trait_type, trait_value|
         rec = counter[ trait_type ] ||= { count: 0,
@@ -118,8 +209,35 @@ def dump_attributes
 
   print "\n"
   puts
+
+  ## return all-in-one hash
+  {
+    total:  attributes_by_count,
+    traits: counter,
+  }
+end
+
+
+def dump_attributes
+  stats = calc_attribute_counters
+
+  total    = stats[:total]
+  counter  = stats[:traits]
+
+  puts
+  puts "attribute usage / counts:"
+  pp total
+  puts
+
+  puts "#{counter.size} attribute(s):"
+  counter.each do |trait_name, trait_rec|
+     puts "  #{trait_name}  #{trait_rec[:count]}  (#{trait_rec[:by_type].size} uniques)"
+  end
+
+  puts
   pp counter
 end
+
 
 
 def pixelate( range=(0...@count) )

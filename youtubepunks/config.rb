@@ -22,6 +22,7 @@ exclude: [
 #      Guava Juice #491  => 491
 meta_slugify:  /^(?<name>.+)[ ]+#(?<num>[0-9]+)$/,
 
+
 image_pixelate: ->(img) {
     if img.width == 512 && img.height == 512
       img.pixelate( from: '512x512', to: '24x24' )
