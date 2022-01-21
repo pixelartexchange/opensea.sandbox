@@ -32,6 +32,96 @@ def download( range=(0...@count) )
 end
 
 
+
+def _meta_slugify( meta, index )
+
+  slug = nil
+
+  #########################
+  ## case 1 - regexp
+  if @meta_slugify.is_a?( Regexp )
+    if m=meta.name.match( @meta_slugify )
+       captures = m.named_captures   ## get named captures in match data as hash (keys as strings)
+       # e.g.
+       #=> {"num"=>"3"}
+       #=> {"num"=>"498", "name"=>"Doge"}
+       pp captures
+
+       num  = captures['num']  ? captures['num'].to_i( 10 ) : nil   ## note: add base 10 (e.g. 015=>15)
+       name = captures['name'] ? captures['name'].strip     : nil
+
+       slug = ''
+       if num
+         slug << "%06d" % num    ## todo/check: always fill/zero-pad with six 000000's - why? why not?
+       end
+
+       if name
+         slug << "-"   if num   ## add separator
+         slug << slugify( name )
+       end
+    else
+      puts "!! ERROR - cannot find id in >#{meta.name}<:"
+      pp meta
+      exit 1
+    end
+   ##########################
+   ## case 2 - proc   - todo/fix: check for return type and support MatchData - why? why not??
+   elsif @meta_slugify.is_a?( Proc )
+     slug = @meta_slugify.call( meta, index )
+   else
+     raise ArgumentError, "meta_slugify - unsupported type: #{@meta_slugify.class.name}"
+   end
+
+   slug
+end
+
+
+def dump_attributes
+  counter = {}
+
+  range=(0...@count)
+  range.each do |id|
+
+    meta = OpenSea::Meta.read( "./#{@slug}/meta/#{id}.json" )
+
+    ####
+    # filter out/skip
+    if @exclude.include?( meta.name )
+      puts "  skipping / exclude #{id} >#{meta.name}<..."
+      next
+    end
+
+
+    traits = meta.traits
+    # print "#{traits.size} - "
+    # pp  traits
+
+
+    print "#{id}.."   if id % 100 == 0  ## print progress report
+
+
+    rec = counter[ 'Attribute Count'] ||= { count: 0,
+                                            by_type: Hash.new(0)
+                                          }
+    rec[ :count ] +=1
+    rec[ :by_type ][ traits.size ] += 1
+
+
+    traits.each do |trait_type, trait_value|
+        rec = counter[ trait_type ] ||= { count: 0,
+                                          by_type: Hash.new(0)
+                                        }
+        rec[ :count ] +=1
+        rec[ :by_type ][ trait_value ] += 1
+    end
+  end
+
+  print "\n"
+  puts
+  pp counter
+end
+
+
 def pixelate( range=(0...@count) )
 
   meta_slugs = Hash.new( 0 )   ## deduplicate (auto-add counter if duplicate)
@@ -41,16 +131,19 @@ def pixelate( range=(0...@count) )
 
 
   range.each do |id|
+    meta = OpenSea::Meta.read( "./#{@slug}/meta/#{id}.json" )
+
     ####
     # filter out/skip
-    next if @exclude.include?( id )    ## todo/check: report skipping of item - why? why not?
-
-
-    meta = OpenSea::Meta.read( "./#{@slug}/meta/#{id}.json" )
+    if @exclude.include?( meta.name )
+       puts "  skipping / exclude #{id} >#{meta.name}<..."
+       next
+    end
 
     puts meta.name
 
-    meta_slug = @meta_slugify.call( meta, id )
+
+    meta_slug = _meta_slugify( meta, id )
     count = meta_slugs[ meta_slug ] += 1
 
     meta_slug = "#{meta_slug}_(#{count})"  if count > 1

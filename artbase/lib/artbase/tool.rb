@@ -89,6 +89,8 @@ class Tool
       download_meta
     elsif ['i', 'img', 'image', 'images'].include?( command )
       download_images( offset: options[ :offset] )
+    elsif ['a', 'attr', 'attributes'].include?( command )
+      dump_attributes
     elsif ['t', 'test'].include?( command )
        puts "  testing, testing, testing"
     else
@@ -99,9 +101,15 @@ class Tool
   end
 
 
+  def self.dump_attributes
+    puts "==> dump attributes"
+    @collection.dump_attributes
+  end
+
+
   def self.download_meta
       puts "==> download meta"
-      @collection.download_meta;
+      @collection.download_meta
   end
 
   def self.download_images( offset: )
