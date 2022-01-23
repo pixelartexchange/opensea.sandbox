@@ -4,11 +4,15 @@ class Collection    ## todo/check - change to OpenseaCollection or such - why? w
 
 attr_reader :slug, :count
 
-def initialize( slug, count,   # check: rename count to items or such - why? why not?
+# check: rename count to items or such - why? why not?
+#        default format to '24x24' - why? why not?
+def initialize( slug, count,
                 meta_slugify: nil,
                 image_pixelate: nil,
                 patch: nil,
-                exclude: [] )
+                exclude: [],
+                format:,
+                source:  )
   @slug = slug
   @count = count
 
@@ -18,7 +22,41 @@ def initialize( slug, count,   # check: rename count to items or such - why? why
   @patch  = patch
 
   @exclude = exclude
+
+  @width, @height = _parse_dimension( format )
+
+
+  ## note: allow multiple source formats / dimensions
+  ### e.g. convert   512x512 into  [ [512,512] ]
+  ##
+  source = [source]  unless source.is_a?( Array )
+  @sources = source.map { |dimension| _parse_dimension( dimension ) }
 end
+
+## e.g. convert dimension (width x height) "24x24" or "24 x 24" to  [24,24]
+def _parse_dimension( str )
+   str.split( /x/i ).map { |str| str.strip.to_i }
+end
+
+
+def _image_pixelate( img )
+  if @image_pixelate
+    @image_pixelate.call( img )
+  else
+    @sources.each do |source_width, source_height|
+      if img.width == source_width && img.height == source_height
+        return img.pixelate( from: "#{source_width}x#{source_height}",
+                             to: "#{@width}x#{@height}" )
+      end
+    end
+
+    puts "!! ERROR - unknown image dimension #{img.width}x#{img.height}; sorry"
+    puts "           supported source dimensions include: #{@sources.inspect}"
+    exit 1
+  end
+end
+
+
 
 
 def download_meta( range=(0...@count) )
@@ -33,6 +71,33 @@ def download( range=(0...@count) )
   download_meta( range )
   download_images( range )
 end
+
+
+
+
+
+def make_composite
+  ### use well-known / pre-defined (default) grids (cols x rows) for now - why? why not?
+
+  composite_count = @count - @exclude.size
+  cols, rows = if      composite_count == 100    then   [10,  10]
+               elsif   composite_count == 500    then   [25,  20]
+               elsif   composite_count == 10000  then   [100, 100]
+               else
+                   raise ArgumentError, "sorry - unknown composite count #{composite_count}/#{@count} for now"
+               end
+
+  composite = ImageComposite.new( cols, rows,
+                                  width:  @width,
+                                  height: @height )
+
+  ## note: for now as a convention (auto-)add all .pngs
+  ##         in saved in (default) pixelate output dir
+  composite.add_glob( "./#{@slug}/ii/*.png" )
+
+  composite.save( "./#{@slug}/tmp/#{@slug}-#{@width}x#{@height}.png" )
+end
+
 
 
 def _meta_slugify_match( regex, meta, index )
@@ -315,7 +380,7 @@ def pixelate( range=(0...@count) )
 
     img = Image.read( "./#{@slug}/i/#{id}.png" )
 
-    pix = @image_pixelate.call( img )
+    pix = _image_pixelate( img )
 
     path = "./#{@slug}/ii/#{meta_slug}.png"
     puts "   saving to >#{path}<..."

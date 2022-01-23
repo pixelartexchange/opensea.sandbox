@@ -93,6 +93,8 @@ class Tool
       dump_attributes
     elsif ['x', 'exp', 'export'].include?( command )
       export_attributes
+    elsif ['c', 'composite'].include?( command )
+      make_composite
     elsif ['t', 'test'].include?( command )
        puts "  testing, testing, testing"
     else
@@ -102,6 +104,10 @@ class Tool
     puts "bye"
   end
 
+  def self.make_composite
+    puts "==> make composite"
+    @collection.make_composite
+  end
 
   def self.dump_attributes
     puts "==> dump attributes"

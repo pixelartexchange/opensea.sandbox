@@ -9,6 +9,9 @@
 
 
 COLLECTION = Collection.new( 'youtubepunks', 502,
+                               format: '24x24',
+                               source: '512x512',
+
 ####
 # filter out/skip  when pixelate / rarity & popularity attributes:
 exclude: [
@@ -21,16 +24,6 @@ exclude: [
 # e.g. Cody Ko #018      => 18
 #      Guava Juice #491  => 491
 meta_slugify:  /^(?<name>.+)[ ]+#(?<num>[0-9]+)$/,
-
-
-image_pixelate: ->(img) {
-    if img.width == 512 && img.height == 512
-      img.pixelate( from: '512x512', to: '24x24' )
-    else
-      puts "!! ERROR - unknown image dimension #{img.width}x#{img.height}; sorry"
-      exit 1
-    end
-}
 )
 
 
