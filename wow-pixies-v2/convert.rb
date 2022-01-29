@@ -8,7 +8,11 @@ require_relative '../artbase'
 
 collection = 'wow-pixies-v2'
 
-convert_images( collection )
+convert_images( collection,
+                   from: 'jpg', to: 'png',
+                   dir: 'token-i',
+                   overwrite: false )
+
 
 puts "bye"
 

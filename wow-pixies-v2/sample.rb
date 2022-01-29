@@ -1,41 +1,21 @@
 ####
 # try to check pixel format and color sampling offsets
 
+$LOAD_PATH.unshift( "../../pixelart/pixelart/lib" )
+$LOAD_PATH.unshift( "../../artbase/lib" )
 
 require_relative '../artbase'
 
 
 
-def calc_pixel_offset( from:, to:, padding_left: 0, padding_top: 0 )
 
-end
-
-
-###  (100x100)
-##      5*100 = 500 + 12 = 512
-PIXEL_OFFSET_100 =
-    100.times.reduce({}) {|h,i| h[ (5*i+12.0/100.0*i).to_i ] = i; h }
-
-###  (98x98)
-##      5*98  = 490 + 22 = 512
-PIXEL_OFFSET_98 =
-   98.times.reduce({}) {|h,i| h[ (5*i+22.0/98.0*i).to_i ] = i; h }
-
-###  (96x96)
-##      5*96  = 480 + 32 = 512
-PIXEL_OFFSET_96 =
-   96.times.reduce({}) {|h,i| h[ (5*i+32.0/96.0*i).to_i ] = i; h }
-
-PIXEL_OFFSET_94 =
-   94.times.reduce({}) {|h,i| h[ (5*i+42.0/94.0*i).to_i ] = i; h }
-
-
-def sample( img, offset,
+def sample( img, steps_x, steps_y=steps_x,
               color:  Color.parse( '#ffff00' ),
               top_x: 0,
               top_y: 0)  ## add a yellow pixel
 
-  if img.width == 512 && img.height == 512
+  ## if img.width == 512 && img.height == 512
+  if img.width == 1500 && img.height == 1500
     ## do nothing; everything ok
   else
     puts "!! ERROR - unknown image dimension #{img.width}x#{img.height}; sorry"
@@ -43,11 +23,10 @@ def sample( img, offset,
   end
 
 
-
-  offset.each do |offset_x, x|
-    offset.each do |offset_y, y|
-        base_x = top_x+offset_x
-        base_y = top_y+offset_y
+  steps_x.each_with_index do |step_x, x|
+    steps_y.each_with_index do |step_y, y|
+        base_x = top_x+step_x
+        base_y = top_y+step_y
 
         img[base_x,base_y] = color
 
@@ -64,50 +43,64 @@ def sample( img, offset,
 end
 
 
+top_x = 8
+steps_x       = Image.calc_sample_steps( 1500-2, 98 )
+steps_y       = Image.calc_sample_steps( 1500,   98 )
+
+steps_x_debug = Image.calc_sample_steps( 1500-2, 98, center: false )
+steps_y_debug = Image.calc_sample_steps( 1500,   98, center: false )
 
 
-# img = Image.read( "./i/0.png")
-# img = sample( img, PIXEL_OFFSET_98 )
-# img.save( "./tmp/0_(98).png")
+composite = ImageComposite.new( 2, 2, width: 98,
+                                      height: 98 )
 
-img = Image.read( "./i/1.png")
-pix = img.pixelate( PIXEL_OFFSET_98 )
+
+
+img = Image.read( "./token-i/1.png")
+pix = img.pixelate( steps_x, steps_y, top_x: top_x )
 pix.save( "./tmp/1_(98)_pix.png")
-img = sample( img, PIXEL_OFFSET_98, top_x: 3, top_y: 1 )
-img.save( "./tmp/1_(98_3_1).png")
+composite << pix
 
-img = Image.read( "./i/2.png")
-pix = img.pixelate( PIXEL_OFFSET_98 )
+img = sample( img, steps_x_debug, steps_y_debug, top_x: top_x )
+# img = sample( img, PIXEL_OFFSET_98, top_x: 3, top_y: 1 )
+img.save( "./tmp/1_(98).png")
+
+
+img = Image.read( "./token-i/2.png")
+pix = img.pixelate( steps_x, steps_y, top_x: top_x )
 pix.save( "./tmp/2_(98)_pix.png")
-img = sample( img, PIXEL_OFFSET_98, top_x: 3, top_y: 1 )
-img.save( "./tmp/2_(98_3_1).png")
+composite << pix
+
+img = sample( img, steps_x_debug, steps_y_debug, top_x: top_x )
+# img = sample( img, PIXEL_OFFSET_98, top_x: 3, top_y: 1 )
+img.save( "./tmp/2_(98).png")
 
 
-__END__
 
-img = Image.read( "./i/1.png")
-img = sample( img, PIXEL_OFFSET_96 )
-img.save( "./tmp/1_(96).png")
+img = Image.read( "./token-i/12.png")
+pix = img.pixelate( steps_x, steps_y, top_x: top_x )
+pix.save( "./tmp/12_(98)_pix.png")
+composite << pix
 
-img = Image.read( "./i/2.png")
-img = sample( img, PIXEL_OFFSET_96 )
-img.save( "./tmp/2_(96).png")
-
-
-img = Image.read( "./i/1.png")
-img = sample( img, PIXEL_OFFSET_94 )
-img.save( "./tmp/1_(94).png")
+img = sample( img, steps_x_debug, steps_y_debug, top_x: top_x )
+# img = sample( img, PIXEL_OFFSET_98, top_x: 3, top_y: 1 )
+img.save( "./tmp/12_(98).png")
 
 
-img = Image.read( "./i/1.png")
-img = sample( img, PIXEL_OFFSET_100 )
-img.save( "./tmp/1_(100).png")
+img = Image.read( "./token-i/11.png")
+pix = img.pixelate( steps_x, steps_y, top_x: top_x )
+pix.save( "./tmp/11_(98)_pix.png")
+composite << pix
 
-img = Image.read( "./i/2.png")
-pix = img.pixelate( PIXEL_OFFSET_100 )
-pix.save( "./tmp/2_(100)_pix.png")
-img = sample( img, PIXEL_OFFSET_100 )
-img.save( "./tmp/2_(100).png")
+img = sample( img, steps_x_debug, steps_y_debug, top_x: top_x )
+# img = sample( img, PIXEL_OFFSET_98, top_x: 3, top_y: 1 )
+img.save( "./tmp/11_(98).png")
+
+
+
+
+composite.save( "./tmp/pixies.png" )
+composite.zoom( 2 ).save( "./tmp/pixies@2x.png" )
 
 
 
